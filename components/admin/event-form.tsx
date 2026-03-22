@@ -29,7 +29,7 @@ export function EventForm() {
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-      setError('Vous devez être connecté')
+      setError('You must be signed in')
       setLoading(false)
       return
     }
@@ -61,18 +61,18 @@ export function EventForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
+        <div className="p-3 bg-destructive/10 text-destructive rounded-lg text-sm" role="alert">
           {error}
         </div>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="title">Titre</Label>
+        <Label htmlFor="title">Title</Label>
         <Input
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Ex: Conférence IA"
+          placeholder="e.g. AI Conference"
           required
         />
       </div>
@@ -83,23 +83,23 @@ export function EventForm() {
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Détails de l'événement..."
+          placeholder="Event details..."
           rows={3}
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="location">Lieu</Label>
+        <Label htmlFor="location">Location</Label>
         <Input
           id="location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          placeholder="Ex: Amphithéâtre A"
+          placeholder="e.g. Auditorium A"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="startDate">Date de début</Label>
+        <Label htmlFor="startDate">Start date</Label>
         <Input
           id="startDate"
           type="datetime-local"
@@ -110,7 +110,7 @@ export function EventForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="endDate">Date de fin (optionnel)</Label>
+        <Label htmlFor="endDate">End date (optional)</Label>
         <Input
           id="endDate"
           type="datetime-local"
@@ -121,7 +121,7 @@ export function EventForm() {
 
       <Button type="submit" className="w-full" disabled={loading || !title.trim() || !startDate}>
         {loading ? <Spinner className="h-4 w-4 mr-2" /> : null}
-        Créer
+        Create
       </Button>
     </form>
   )

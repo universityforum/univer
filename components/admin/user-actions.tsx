@@ -63,24 +63,24 @@ export function UserActions({ user }: UserActionsProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <MoreHorizontal className="h-4 w-4" />
+          <Button variant="ghost" size="icon" aria-label="User actions">
+            <MoreHorizontal className="h-4 w-4" aria-hidden="true" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setRoleDialogOpen(true)}>
-            <UserCog className="h-4 w-4 mr-2" />
-            Modifier le rôle
+            <UserCog className="h-4 w-4 mr-2" aria-hidden="true" />
+            Change role
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem 
             onClick={() => setDeleteDialogOpen(true)}
             className="text-destructive"
           >
-            <Trash2 className="h-4 w-4 mr-2" />
-            Supprimer
+            <Trash2 className="h-4 w-4 mr-2" aria-hidden="true" />
+            Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -88,32 +88,32 @@ export function UserActions({ user }: UserActionsProps) {
       <Dialog open={roleDialogOpen} onOpenChange={setRoleDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Modifier le rôle</DialogTitle>
+            <DialogTitle>Change Role</DialogTitle>
             <DialogDescription>
-              Changer le rôle de {user.full_name || user.email}
+              Change the role of {user.full_name || user.email}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label>Rôle</Label>
+              <Label htmlFor="user-role">Role</Label>
               <Select value={selectedRole} onValueChange={(v) => setSelectedRole(v as UserRole)}>
-                <SelectTrigger>
+                <SelectTrigger id="user-role">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="student">Étudiant</SelectItem>
-                  <SelectItem value="teacher">Enseignant</SelectItem>
-                  <SelectItem value="admin">Administrateur</SelectItem>
+                  <SelectItem value="student">Student</SelectItem>
+                  <SelectItem value="teacher">Teacher</SelectItem>
+                  <SelectItem value="admin">Administrator</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setRoleDialogOpen(false)}>
-              Annuler
+              Cancel
             </Button>
             <Button onClick={handleRoleChange} disabled={loading}>
-              {loading ? 'Enregistrement...' : 'Enregistrer'}
+              {loading ? 'Saving...' : 'Save'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -122,18 +122,18 @@ export function UserActions({ user }: UserActionsProps) {
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Supprimer l{"'"}utilisateur</DialogTitle>
+            <DialogTitle>Delete User</DialogTitle>
             <DialogDescription>
-              Êtes-vous sûr de vouloir supprimer {user.full_name || user.email} ? 
-              Cette action est irréversible.
+              Are you sure you want to delete {user.full_name || user.email}? 
+              This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
-              Annuler
+              Cancel
             </Button>
             <Button variant="destructive" onClick={handleDelete} disabled={loading}>
-              {loading ? 'Suppression...' : 'Supprimer'}
+              {loading ? 'Deleting...' : 'Delete'}
             </Button>
           </DialogFooter>
         </DialogContent>

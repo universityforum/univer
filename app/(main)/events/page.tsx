@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Calendar, MapPin, Clock, Users } from 'lucide-react'
 import { format, isFuture, isPast, isToday } from 'date-fns'
-import { fr } from 'date-fns/locale'
 
 export default async function EventsPage() {
   const supabase = await createClient()
@@ -21,20 +20,20 @@ export default async function EventsPage() {
 
   const getEventStatus = (startDate: string) => {
     if (isToday(new Date(startDate))) {
-      return { label: "Aujourd'hui", color: 'bg-green-500/10 text-green-700' }
+      return { label: 'Today', color: 'bg-green-500/10 text-green-700' }
     }
     if (isFuture(new Date(startDate))) {
-      return { label: 'À venir', color: 'bg-blue-500/10 text-blue-700' }
+      return { label: 'Upcoming', color: 'bg-blue-500/10 text-blue-700' }
     }
-    return { label: 'Passé', color: 'bg-gray-500/10 text-gray-700' }
+    return { label: 'Past', color: 'bg-gray-500/10 text-gray-700' }
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Événements</h1>
+        <h1 className="text-3xl font-bold mb-2">Events</h1>
         <p className="text-muted-foreground">
-          Découvrez les événements universitaires à venir
+          Discover upcoming university events
         </p>
       </div>
 
@@ -42,8 +41,8 @@ export default async function EventsPage() {
         {upcomingEvents.length > 0 && (
           <section>
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-primary" />
-              Événements à venir
+              <Calendar className="h-5 w-5 text-primary" aria-hidden="true" />
+              Upcoming Events
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {upcomingEvents.map((event) => {
@@ -64,20 +63,20 @@ export default async function EventsPage() {
                     <CardContent>
                       <div className="space-y-2 text-sm">
                         <div className="flex items-center gap-2 text-muted-foreground">
-                          <Clock className="h-4 w-4" />
+                          <Clock className="h-4 w-4" aria-hidden="true" />
                           <span>
-                            {format(new Date(event.start_date), 'EEEE d MMMM yyyy à HH:mm', { locale: fr })}
+                            {format(new Date(event.start_date), 'EEEE, MMMM d, yyyy \'at\' HH:mm')}
                           </span>
                         </div>
                         {event.location && (
                           <div className="flex items-center gap-2 text-muted-foreground">
-                            <MapPin className="h-4 w-4" />
+                            <MapPin className="h-4 w-4" aria-hidden="true" />
                             <span>{event.location}</span>
                           </div>
                         )}
                         <div className="flex items-center gap-2 text-muted-foreground">
-                          <Users className="h-4 w-4" />
-                          <span>Organisé par {event.creator?.full_name || 'Administration'}</span>
+                          <Users className="h-4 w-4" aria-hidden="true" />
+                          <span>Organized by {event.creator?.full_name || 'Administration'}</span>
                         </div>
                       </div>
                     </CardContent>
@@ -91,10 +90,10 @@ export default async function EventsPage() {
         {upcomingEvents.length === 0 && (
           <Card>
             <CardContent className="p-8 text-center">
-              <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Aucun événement à venir</h3>
+              <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" aria-hidden="true" />
+              <h3 className="text-lg font-semibold mb-2">No upcoming events</h3>
               <p className="text-muted-foreground">
-                Revenez bientôt pour découvrir les prochains événements
+                Check back soon for upcoming events
               </p>
             </CardContent>
           </Card>
@@ -103,7 +102,7 @@ export default async function EventsPage() {
         {pastEvents.length > 0 && (
           <section>
             <h2 className="text-xl font-semibold mb-4 text-muted-foreground">
-              Événements passés
+              Past Events
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {pastEvents.slice(0, 6).map((event) => (
@@ -111,8 +110,8 @@ export default async function EventsPage() {
                   <CardContent className="p-4">
                     <h3 className="font-medium mb-2">{event.title}</h3>
                     <div className="text-sm text-muted-foreground flex items-center gap-2">
-                      <Clock className="h-3 w-3" />
-                      {format(new Date(event.start_date), 'd MMMM yyyy', { locale: fr })}
+                      <Clock className="h-3 w-3" aria-hidden="true" />
+                      {format(new Date(event.start_date), 'MMMM d, yyyy')}
                     </div>
                   </CardContent>
                 </Card>

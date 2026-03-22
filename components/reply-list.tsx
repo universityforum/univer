@@ -5,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Clock, CheckCircle } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import type { Reply, Profile } from '@/lib/types'
 
 interface ReplyListProps {
@@ -23,7 +22,7 @@ export function ReplyList({ replies }: ReplyListProps) {
     return (
       <Card>
         <CardContent className="p-6 text-center text-muted-foreground">
-          Aucune réponse pour le moment. Soyez le premier à répondre !
+          No replies yet. Be the first to reply!
         </CardContent>
       </Card>
     )
@@ -44,7 +43,7 @@ export function ReplyList({ replies }: ReplyListProps) {
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2 mb-2">
                   <span className="font-medium">
-                    {reply.author?.full_name || 'Anonyme'}
+                    {reply.author?.full_name || 'Anonymous'}
                   </span>
                   {reply.author?.role && (
                     <Badge variant="secondary" className="capitalize text-xs">
@@ -53,13 +52,13 @@ export function ReplyList({ replies }: ReplyListProps) {
                   )}
                   {reply.is_solution && (
                     <Badge className="bg-secondary text-secondary-foreground">
-                      <CheckCircle className="h-3 w-3 mr-1" />
+                      <CheckCircle className="h-3 w-3 mr-1" aria-hidden="true" />
                       Solution
                     </Badge>
                   )}
                   <span className="text-sm text-muted-foreground flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    {formatDistanceToNow(new Date(reply.created_at), { addSuffix: true, locale: fr })}
+                    <Clock className="h-3 w-3" aria-hidden="true" />
+                    {formatDistanceToNow(new Date(reply.created_at), { addSuffix: true })}
                   </span>
                 </div>
                 <div className="prose prose-sm max-w-none">

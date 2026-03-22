@@ -30,7 +30,7 @@ export function ReplyForm({ postId, parentId, onSuccess }: ReplyFormProps) {
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-      setError('Vous devez être connecté')
+      setError('You must be signed in')
       setLoading(false)
       return
     }
@@ -58,21 +58,22 @@ export function ReplyForm({ postId, parentId, onSuccess }: ReplyFormProps) {
     <Card>
       <CardContent className="p-4">
         {error && (
-          <div className="mb-4 p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
+          <div className="mb-4 p-3 bg-destructive/10 text-destructive rounded-lg text-sm" role="alert">
             {error}
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <Textarea
-            placeholder="Écrire une réponse..."
+            placeholder="Write a reply..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={4}
             required
+            aria-label="Reply content"
           />
           <Button type="submit" disabled={loading || !content.trim()}>
             {loading ? <Spinner className="h-4 w-4 mr-2" /> : null}
-            Répondre
+            Reply
           </Button>
         </form>
       </CardContent>

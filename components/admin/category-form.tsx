@@ -47,18 +47,18 @@ export function CategoryForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
+        <div className="p-3 bg-destructive/10 text-destructive rounded-lg text-sm" role="alert">
           {error}
         </div>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="name">Nom</Label>
+        <Label htmlFor="name">Name</Label>
         <Input
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Ex: Informatique"
+          placeholder="e.g. Computer Science"
           required
         />
       </div>
@@ -69,14 +69,14 @@ export function CategoryForm() {
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Description de la catégorie..."
+          placeholder="Category description..."
           rows={3}
         />
       </div>
 
       <Button type="submit" className="w-full" disabled={loading || !name.trim()}>
         {loading ? <Spinner className="h-4 w-4 mr-2" /> : null}
-        Ajouter
+        Add
       </Button>
     </form>
   )

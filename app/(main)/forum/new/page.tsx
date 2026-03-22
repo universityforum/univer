@@ -39,7 +39,7 @@ export default function NewPostPage() {
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-      setError('Vous devez être connecté pour créer une discussion')
+      setError('You must be signed in to create a discussion')
       setLoading(false)
       return
     }
@@ -67,31 +67,31 @@ export default function NewPostPage() {
     <div className="container mx-auto px-4 py-8 max-w-3xl">
       <Button variant="ghost" asChild className="mb-6">
         <Link href="/forum">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Retour au forum
+          <ArrowLeft className="h-4 w-4 mr-2" aria-hidden="true" />
+          Back to forum
         </Link>
       </Button>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Nouvelle discussion</CardTitle>
+          <CardTitle className="text-2xl">New Discussion</CardTitle>
           <CardDescription>
-            Partagez une question, une idée ou lancez un débat
+            Share a question, idea, or start a debate
           </CardDescription>
         </CardHeader>
         <CardContent>
           {error && (
-            <div className="mb-4 p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-destructive/10 text-destructive rounded-lg text-sm" role="alert">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="title">Titre</Label>
+              <Label htmlFor="title">Title</Label>
               <Input
                 id="title"
-                placeholder="Un titre clair et concis"
+                placeholder="A clear and concise title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -100,10 +100,10 @@ export default function NewPostPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="category">Catégorie</Label>
+              <Label htmlFor="category">Category</Label>
               <Select value={categoryId} onValueChange={setCategoryId}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sélectionner une catégorie" />
+                <SelectTrigger id="category">
+                  <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((category) => (
@@ -116,10 +116,10 @@ export default function NewPostPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="content">Contenu</Label>
+              <Label htmlFor="content">Content</Label>
               <Textarea
                 id="content"
-                placeholder="Décrivez votre sujet en détail..."
+                placeholder="Describe your topic in detail..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 required
@@ -131,10 +131,10 @@ export default function NewPostPage() {
             <div className="flex gap-4">
               <Button type="submit" disabled={loading}>
                 {loading ? <Spinner className="h-4 w-4 mr-2" /> : null}
-                Publier
+                Publish
               </Button>
               <Button type="button" variant="outline" onClick={() => router.back()}>
-                Annuler
+                Cancel
               </Button>
             </div>
           </form>

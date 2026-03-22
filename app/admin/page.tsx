@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, MessageSquare, Calendar, Users2, TrendingUp, Activity } from 'lucide-react'
+import { Users, MessageSquare, Calendar, Users2, Activity } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function AdminDashboard() {
@@ -42,19 +42,19 @@ export default async function AdminDashboard() {
     .limit(5)
 
   const stats = [
-    { label: 'Utilisateurs', value: userCount || 0, icon: Users, href: '/admin/users', color: 'bg-blue-500' },
+    { label: 'Users', value: userCount || 0, icon: Users, href: '/admin/users', color: 'bg-blue-500' },
     { label: 'Discussions', value: postCount || 0, icon: MessageSquare, href: '/admin/posts', color: 'bg-green-500' },
-    { label: 'Réponses', value: replyCount || 0, icon: Activity, href: '/admin/posts', color: 'bg-purple-500' },
-    { label: 'Événements', value: eventCount || 0, icon: Calendar, href: '/admin/events', color: 'bg-orange-500' },
+    { label: 'Replies', value: replyCount || 0, icon: Activity, href: '/admin/posts', color: 'bg-purple-500' },
+    { label: 'Events', value: eventCount || 0, icon: Calendar, href: '/admin/events', color: 'bg-orange-500' },
     { label: 'Clubs', value: clubCount || 0, icon: Users2, href: '/admin/clubs', color: 'bg-pink-500' },
   ]
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Tableau de bord</h1>
+        <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
         <p className="text-muted-foreground">
-          Vue d{"'"}ensemble de la plateforme University Forum
+          Overview of the University Forum platform
         </p>
       </div>
 
@@ -71,7 +71,7 @@ export default async function AdminDashboard() {
                       <p className="text-3xl font-bold">{stat.value}</p>
                     </div>
                     <div className={`p-3 rounded-lg ${stat.color}/10`}>
-                      <Icon className={`h-6 w-6 ${stat.color.replace('bg-', 'text-')}`} />
+                      <Icon className={`h-6 w-6 ${stat.color.replace('bg-', 'text-')}`} aria-hidden="true" />
                     </div>
                   </div>
                 </CardContent>
@@ -85,10 +85,10 @@ export default async function AdminDashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Nouveaux utilisateurs
+              <Users className="h-5 w-5" aria-hidden="true" />
+              New Users
             </CardTitle>
-            <CardDescription>Les 5 derniers inscrits</CardDescription>
+            <CardDescription>Last 5 registered users</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -96,7 +96,7 @@ export default async function AdminDashboard() {
                 recentUsers.map((user) => (
                   <div key={user.id} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted">
                     <div>
-                      <p className="font-medium">{user.full_name || 'Sans nom'}</p>
+                      <p className="font-medium">{user.full_name || 'No name'}</p>
                       <p className="text-sm text-muted-foreground">{user.email}</p>
                     </div>
                     <span className="text-xs text-muted-foreground capitalize px-2 py-1 bg-muted rounded">
@@ -105,7 +105,7 @@ export default async function AdminDashboard() {
                   </div>
                 ))
               ) : (
-                <p className="text-muted-foreground text-center py-4">Aucun utilisateur</p>
+                <p className="text-muted-foreground text-center py-4">No users</p>
               )}
             </div>
           </CardContent>
@@ -114,10 +114,10 @@ export default async function AdminDashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <MessageSquare className="h-5 w-5" />
-              Discussions récentes
+              <MessageSquare className="h-5 w-5" aria-hidden="true" />
+              Recent Discussions
             </CardTitle>
-            <CardDescription>Les 5 dernières discussions</CardDescription>
+            <CardDescription>Last 5 discussions</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -127,16 +127,16 @@ export default async function AdminDashboard() {
                     <div className="min-w-0 flex-1">
                       <p className="font-medium truncate">{post.title}</p>
                       <p className="text-sm text-muted-foreground">
-                        par {post.author?.full_name || 'Anonyme'}
+                        by {post.author?.full_name || 'Anonymous'}
                       </p>
                     </div>
                     <span className="text-xs text-muted-foreground">
-                      {post.views} vues
+                      {post.views} views
                     </span>
                   </div>
                 ))
               ) : (
-                <p className="text-muted-foreground text-center py-4">Aucune discussion</p>
+                <p className="text-muted-foreground text-center py-4">No discussions</p>
               )}
             </div>
           </CardContent>

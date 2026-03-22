@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatDistanceToNow } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { PostActions } from '@/components/admin/post-actions'
 import { Pin, Lock, Eye, MessageSquare } from 'lucide-react'
 
@@ -25,13 +24,13 @@ export default async function AdminPostsPage() {
       <div>
         <h1 className="text-3xl font-bold mb-2">Discussions</h1>
         <p className="text-muted-foreground">
-          Gérer toutes les discussions du forum
+          Manage all forum discussions
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Liste des discussions</CardTitle>
+          <CardTitle>Discussion List</CardTitle>
           <CardDescription>
             {posts?.length || 0} discussion(s)
           </CardDescription>
@@ -41,11 +40,11 @@ export default async function AdminPostsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b text-left">
-                  <th className="pb-3 font-medium">Titre</th>
-                  <th className="pb-3 font-medium">Auteur</th>
-                  <th className="pb-3 font-medium">Catégorie</th>
+                  <th className="pb-3 font-medium">Title</th>
+                  <th className="pb-3 font-medium">Author</th>
+                  <th className="pb-3 font-medium">Category</th>
                   <th className="pb-3 font-medium">Stats</th>
-                  <th className="pb-3 font-medium">Statut</th>
+                  <th className="pb-3 font-medium">Status</th>
                   <th className="pb-3 font-medium">Date</th>
                   <th className="pb-3 font-medium">Actions</th>
                 </tr>
@@ -63,21 +62,21 @@ export default async function AdminPostsPage() {
                         </Link>
                       </td>
                       <td className="py-4 text-muted-foreground">
-                        {post.author?.full_name || post.author?.email || 'Anonyme'}
+                        {post.author?.full_name || post.author?.email || 'Anonymous'}
                       </td>
                       <td className="py-4">
                         <Badge variant="outline">
-                          {post.category?.name || 'Sans catégorie'}
+                          {post.category?.name || 'Uncategorized'}
                         </Badge>
                       </td>
                       <td className="py-4">
                         <div className="flex items-center gap-3 text-sm text-muted-foreground">
                           <span className="flex items-center gap-1">
-                            <Eye className="h-3 w-3" />
+                            <Eye className="h-3 w-3" aria-hidden="true" />
                             {post.views}
                           </span>
                           <span className="flex items-center gap-1">
-                            <MessageSquare className="h-3 w-3" />
+                            <MessageSquare className="h-3 w-3" aria-hidden="true" />
                             {post.replies?.[0]?.count || 0}
                           </span>
                         </div>
@@ -86,14 +85,14 @@ export default async function AdminPostsPage() {
                         <div className="flex items-center gap-1">
                           {post.is_pinned && (
                             <Badge variant="secondary" className="bg-yellow-500/10 text-yellow-700">
-                              <Pin className="h-3 w-3 mr-1" />
-                              Épinglé
+                              <Pin className="h-3 w-3 mr-1" aria-hidden="true" />
+                              Pinned
                             </Badge>
                           )}
                           {post.is_locked && (
                             <Badge variant="secondary" className="bg-red-500/10 text-red-700">
-                              <Lock className="h-3 w-3 mr-1" />
-                              Verrouillé
+                              <Lock className="h-3 w-3 mr-1" aria-hidden="true" />
+                              Locked
                             </Badge>
                           )}
                           {!post.is_pinned && !post.is_locked && (
@@ -102,7 +101,7 @@ export default async function AdminPostsPage() {
                         </div>
                       </td>
                       <td className="py-4 text-sm text-muted-foreground">
-                        {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: fr })}
+                        {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
                       </td>
                       <td className="py-4">
                         <PostActions post={post} />
@@ -112,7 +111,7 @@ export default async function AdminPostsPage() {
                 ) : (
                   <tr>
                     <td colSpan={7} className="py-8 text-center text-muted-foreground">
-                      Aucune discussion
+                      No discussions
                     </td>
                   </tr>
                 )}

@@ -54,16 +54,17 @@ export function JoinClubButton({ clubId, isMember }: JoinClubButtonProps) {
       size="sm"
       onClick={handleToggle}
       disabled={loading}
+      aria-label={member ? 'Leave club' : 'Join club'}
     >
       {member ? (
         <>
-          <UserMinus className="h-4 w-4 mr-1" />
-          Quitter
+          <UserMinus className="h-4 w-4 mr-1" aria-hidden="true" />
+          Leave
         </>
       ) : (
         <>
-          <UserPlus className="h-4 w-4 mr-1" />
-          Rejoindre
+          <UserPlus className="h-4 w-4 mr-1" aria-hidden="true" />
+          Join
         </>
       )}
     </Button>

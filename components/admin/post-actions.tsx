@@ -69,8 +69,8 @@ export function PostActions({ post }: PostActionsProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" disabled={loading}>
-            <MoreHorizontal className="h-4 w-4" />
+          <Button variant="ghost" size="icon" disabled={loading} aria-label="Post actions">
+            <MoreHorizontal className="h-4 w-4" aria-hidden="true" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -78,33 +78,33 @@ export function PostActions({ post }: PostActionsProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <Link href={`/forum/${post.id}`} target="_blank">
-              <ExternalLink className="h-4 w-4 mr-2" />
-              Voir
+              <ExternalLink className="h-4 w-4 mr-2" aria-hidden="true" />
+              View
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={togglePin}>
             {post.is_pinned ? (
               <>
-                <PinOff className="h-4 w-4 mr-2" />
-                Désépingler
+                <PinOff className="h-4 w-4 mr-2" aria-hidden="true" />
+                Unpin
               </>
             ) : (
               <>
-                <Pin className="h-4 w-4 mr-2" />
-                Épingler
+                <Pin className="h-4 w-4 mr-2" aria-hidden="true" />
+                Pin
               </>
             )}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={toggleLock}>
             {post.is_locked ? (
               <>
-                <Unlock className="h-4 w-4 mr-2" />
-                Déverrouiller
+                <Unlock className="h-4 w-4 mr-2" aria-hidden="true" />
+                Unlock
               </>
             ) : (
               <>
-                <Lock className="h-4 w-4 mr-2" />
-                Verrouiller
+                <Lock className="h-4 w-4 mr-2" aria-hidden="true" />
+                Lock
               </>
             )}
           </DropdownMenuItem>
@@ -113,8 +113,8 @@ export function PostActions({ post }: PostActionsProps) {
             onClick={() => setDeleteDialogOpen(true)}
             className="text-destructive"
           >
-            <Trash2 className="h-4 w-4 mr-2" />
-            Supprimer
+            <Trash2 className="h-4 w-4 mr-2" aria-hidden="true" />
+            Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -122,18 +122,18 @@ export function PostActions({ post }: PostActionsProps) {
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Supprimer la discussion</DialogTitle>
+            <DialogTitle>Delete Discussion</DialogTitle>
             <DialogDescription>
-              Êtes-vous sûr de vouloir supprimer cette discussion ? 
-              Toutes les réponses seront également supprimées.
+              Are you sure you want to delete this discussion? 
+              All replies will also be deleted.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
-              Annuler
+              Cancel
             </Button>
             <Button variant="destructive" onClick={handleDelete} disabled={loading}>
-              {loading ? 'Suppression...' : 'Supprimer'}
+              {loading ? 'Deleting...' : 'Delete'}
             </Button>
           </DialogFooter>
         </DialogContent>

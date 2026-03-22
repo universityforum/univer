@@ -11,18 +11,17 @@ import {
   Calendar,
   Users2,
   Megaphone,
-  Settings,
   Shield,
 } from 'lucide-react'
 
 const menuItems = [
-  { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
-  { href: '/admin/users', label: 'Utilisateurs', icon: Users },
-  { href: '/admin/categories', label: 'Catégories', icon: FolderOpen },
+  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/users', label: 'Users', icon: Users },
+  { href: '/admin/categories', label: 'Categories', icon: FolderOpen },
   { href: '/admin/posts', label: 'Discussions', icon: MessageSquare },
-  { href: '/admin/events', label: 'Événements', icon: Calendar },
+  { href: '/admin/events', label: 'Events', icon: Calendar },
   { href: '/admin/clubs', label: 'Clubs', icon: Users2 },
-  { href: '/admin/announcements', label: 'Annonces', icon: Megaphone },
+  { href: '/admin/announcements', label: 'Announcements', icon: Megaphone },
 ]
 
 export function AdminSidebar() {
@@ -32,12 +31,12 @@ export function AdminSidebar() {
     <aside className="w-64 bg-sidebar text-sidebar-foreground border-r flex flex-col">
       <div className="h-16 flex items-center justify-center border-b border-sidebar-border">
         <Link href="/admin" className="flex items-center gap-2">
-          <Shield className="h-6 w-6 text-sidebar-primary" />
+          <Shield className="h-6 w-6 text-sidebar-primary" aria-hidden="true" />
           <span className="font-bold">Admin Panel</span>
         </Link>
       </div>
       
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-4 space-y-1" aria-label="Admin navigation">
         {menuItems.map((item) => {
           const Icon = item.icon
           const isActive = pathname === item.href || 
@@ -52,8 +51,9 @@ export function AdminSidebar() {
                   ? 'bg-sidebar-primary text-sidebar-primary-foreground'
                   : 'text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent'
               }`}
+              aria-current={isActive ? 'page' : undefined}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-5 w-5" aria-hidden="true" />
               {item.label}
             </Link>
           )
