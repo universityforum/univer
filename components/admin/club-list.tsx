@@ -72,7 +72,7 @@ export function ClubList({ clubs }: ClubListProps) {
   if (clubs.length === 0) {
     return (
       <p className="text-center text-muted-foreground py-8">
-        No clubs created
+        Aucun club créé
       </p>
     )
   }
@@ -89,7 +89,7 @@ export function ClubList({ clubs }: ClubListProps) {
               <div className="flex items-center gap-2 mb-1">
                 <span className="font-medium">{club.name}</span>
                 <Badge variant="secondary" className="flex items-center gap-1">
-                  <Users className="h-3 w-3" aria-hidden="true" />
+                  <Users className="h-3 w-3" />
                   {club.club_members?.[0]?.count || 0}
                 </Badge>
               </div>
@@ -99,21 +99,20 @@ export function ClubList({ clubs }: ClubListProps) {
                 </p>
               )}
               <p className="text-xs text-muted-foreground mt-1">
-                Created by {club.creator?.full_name || 'Anonymous'}
+                Créé par {club.creator?.full_name || 'Anonyme'}
               </p>
             </div>
             <div className="flex items-center gap-2 ml-4">
-              <Button variant="ghost" size="icon" onClick={() => openEdit(club)} aria-label="Edit">
-                <Pencil className="h-4 w-4" aria-hidden="true" />
+              <Button variant="ghost" size="icon" onClick={() => openEdit(club)}>
+                <Pencil className="h-4 w-4" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={() => setDeleteClub(club)}
                 className="text-destructive"
-                aria-label="Delete"
               >
-                <Trash2 className="h-4 w-4" aria-hidden="true" />
+                <Trash2 className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -123,17 +122,16 @@ export function ClubList({ clubs }: ClubListProps) {
       <Dialog open={!!editClub} onOpenChange={() => setEditClub(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Club</DialogTitle>
+            <DialogTitle>Modifier le club</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-club-name">Name</Label>
-              <Input id="edit-club-name" value={name} onChange={(e) => setName(e.target.value)} />
+              <Label>Nom</Label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-club-desc">Description</Label>
+              <Label>Description</Label>
               <Textarea 
-                id="edit-club-desc"
                 value={description} 
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
@@ -142,10 +140,10 @@ export function ClubList({ clubs }: ClubListProps) {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditClub(null)}>
-              Cancel
+              Annuler
             </Button>
             <Button onClick={handleEdit} disabled={loading || !name.trim()}>
-              Save
+              Enregistrer
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -154,18 +152,18 @@ export function ClubList({ clubs }: ClubListProps) {
       <Dialog open={!!deleteClub} onOpenChange={() => setDeleteClub(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Club</DialogTitle>
+            <DialogTitle>Supprimer le club</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete "{deleteClub?.name}"?
-              All members will be removed.
+              Êtes-vous sûr de vouloir supprimer "{deleteClub?.name}" ?
+              Tous les membres seront retirés.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteClub(null)}>
-              Cancel
+              Annuler
             </Button>
             <Button variant="destructive" onClick={handleDelete} disabled={loading}>
-              Delete
+              Supprimer
             </Button>
           </DialogFooter>
         </DialogContent>

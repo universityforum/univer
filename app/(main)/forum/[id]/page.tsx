@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ArrowLeft, Eye, Clock, MessageSquare, Pin, Lock } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import { fr } from 'date-fns/locale'
 import { ReplyForm } from '@/components/reply-form'
 import { ReplyList } from '@/components/reply-list'
 import { LikeButton } from '@/components/like-button'
@@ -71,8 +72,8 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <Button variant="ghost" asChild className="mb-6">
         <Link href="/forum">
-          <ArrowLeft className="h-4 w-4 mr-2" aria-hidden="true" />
-          Back to forum
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Retour au forum
         </Link>
       </Button>
 
@@ -89,14 +90,14 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 {post.is_pinned && (
                   <Badge variant="secondary" className="bg-secondary/20">
-                    <Pin className="h-3 w-3 mr-1" aria-hidden="true" />
-                    Pinned
+                    <Pin className="h-3 w-3 mr-1" />
+                    Épinglé
                   </Badge>
                 )}
                 {post.is_locked && (
                   <Badge variant="outline">
-                    <Lock className="h-3 w-3 mr-1" aria-hidden="true" />
-                    Locked
+                    <Lock className="h-3 w-3 mr-1" />
+                    Verrouillé
                   </Badge>
                 )}
                 {post.category && (
@@ -106,19 +107,19 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
               <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
                 <span className="font-medium text-foreground">
-                  {post.author?.full_name || 'Anonymous'}
+                  {post.author?.full_name || 'Anonyme'}
                 </span>
                 <span className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" aria-hidden="true" />
-                  {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
+                  <Clock className="h-3 w-3" />
+                  {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: fr })}
                 </span>
                 <span className="flex items-center gap-1">
-                  <Eye className="h-3 w-3" aria-hidden="true" />
-                  {post.views + 1} views
+                  <Eye className="h-3 w-3" />
+                  {post.views + 1} vues
                 </span>
                 <span className="flex items-center gap-1">
-                  <MessageSquare className="h-3 w-3" aria-hidden="true" />
-                  {replies?.length || 0} replies
+                  <MessageSquare className="h-3 w-3" />
+                  {replies?.length || 0} réponses
                 </span>
               </div>
               <div className="prose prose-sm max-w-none">
@@ -139,7 +140,7 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
 
       <div className="space-y-6">
         <h2 className="text-xl font-semibold">
-          Replies ({replies?.length || 0})
+          Réponses ({replies?.length || 0})
         </h2>
 
         <ReplyList replies={replies || []} currentUserId={user?.id} />
@@ -149,18 +150,18 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
         ) : post.is_locked ? (
           <Card>
             <CardContent className="p-6 text-center text-muted-foreground">
-              <Lock className="h-8 w-8 mx-auto mb-2" aria-hidden="true" />
-              This discussion is locked
+              <Lock className="h-8 w-8 mx-auto mb-2" />
+              Cette discussion est verrouillée
             </CardContent>
           </Card>
         ) : (
           <Card>
             <CardContent className="p-6 text-center">
               <p className="text-muted-foreground mb-4">
-                Sign in to reply
+                Connectez-vous pour répondre
               </p>
               <Button asChild>
-                <Link href="/login">Sign in</Link>
+                <Link href="/login">Se connecter</Link>
               </Button>
             </CardContent>
           </Card>

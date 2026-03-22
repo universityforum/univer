@@ -61,7 +61,7 @@ export default function LoginPage() {
       setError(error.message)
       setLoading(false)
     } else {
-      setMessage('Check your email to confirm your registration.')
+      setMessage('Vérifiez votre email pour confirmer votre inscription.')
       setLoading(false)
     }
   }
@@ -91,19 +91,19 @@ export default function LoginPage() {
           <div className="flex justify-center mb-4">
             <Image src="/logo.png" alt="University Forum" width={180} height={90} />
           </div>
-          <CardTitle className="text-2xl">Welcome</CardTitle>
+          <CardTitle className="text-2xl">Bienvenue</CardTitle>
           <CardDescription>
-            Sign in to access the university forum
+            Connectez-vous pour accéder au forum universitaire
           </CardDescription>
         </CardHeader>
         <CardContent>
           {error && (
-            <div className="mb-4 p-3 bg-destructive/10 text-destructive rounded-lg text-sm" role="alert">
+            <div className="mb-4 p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
               {error}
             </div>
           )}
           {message && (
-            <div className="mb-4 p-3 bg-secondary/20 text-secondary-foreground rounded-lg text-sm" role="status">
+            <div className="mb-4 p-3 bg-secondary/20 text-secondary-foreground rounded-lg text-sm">
               {message}
             </div>
           )}
@@ -117,7 +117,7 @@ export default function LoginPage() {
             {loading ? (
               <Spinner className="h-4 w-4" />
             ) : (
-              <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                   fill="#4285F4"
@@ -136,7 +136,7 @@ export default function LoginPage() {
                 />
               </svg>
             )}
-            Continue with Google
+            Continuer avec Google
           </Button>
 
           <div className="relative mb-6">
@@ -144,14 +144,14 @@ export default function LoginPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">Or</span>
+              <span className="bg-card px-2 text-muted-foreground">Ou</span>
             </div>
           </div>
 
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsTrigger value="login">Connexion</TabsTrigger>
+              <TabsTrigger value="signup">Inscription</TabsTrigger>
             </TabsList>
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
@@ -160,41 +160,38 @@ export default function LoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="your@email.com"
+                    placeholder="votre@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    autoComplete="email"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">Mot de passe</Label>
                   <Input
                     id="password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    autoComplete="current-password"
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? <Spinner className="h-4 w-4" /> : 'Sign in'}
+                  {loading ? <Spinner className="h-4 w-4" /> : 'Se connecter'}
                 </Button>
               </form>
             </TabsContent>
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">Full name</Label>
+                  <Label htmlFor="fullName">Nom complet</Label>
                   <Input
                     id="fullName"
                     type="text"
-                    placeholder="John Doe"
+                    placeholder="Jean Dupont"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required
-                    autoComplete="name"
                   />
                 </div>
                 <div className="space-y-2">
@@ -202,15 +199,14 @@ export default function LoginPage() {
                   <Input
                     id="signupEmail"
                     type="email"
-                    placeholder="your@email.com"
+                    placeholder="votre@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    autoComplete="email"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signupPassword">Password</Label>
+                  <Label htmlFor="signupPassword">Mot de passe</Label>
                   <Input
                     id="signupPassword"
                     type="password"
@@ -218,11 +214,10 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={6}
-                    autoComplete="new-password"
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? <Spinner className="h-4 w-4" /> : 'Sign up'}
+                  {loading ? <Spinner className="h-4 w-4" /> : "S'inscrire"}
                 </Button>
               </form>
             </TabsContent>
@@ -230,7 +225,7 @@ export default function LoginPage() {
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
             <Link href="/" className="text-primary hover:underline">
-              Back to home
+              Retour à l{"'"}accueil
             </Link>
           </p>
         </CardContent>

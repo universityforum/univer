@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
 import { CategoryList } from '@/components/admin/category-list'
 import { CategoryForm } from '@/components/admin/category-form'
 
@@ -15,9 +17,9 @@ export default async function AdminCategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Categories</h1>
+          <h1 className="text-3xl font-bold mb-2">Catégories</h1>
           <p className="text-muted-foreground">
-            Manage forum categories
+            Gérer les catégories du forum
           </p>
         </div>
       </div>
@@ -26,9 +28,9 @@ export default async function AdminCategoriesPage() {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Category List</CardTitle>
+              <CardTitle>Liste des catégories</CardTitle>
               <CardDescription>
-                {categories?.length || 0} category(ies)
+                {categories?.length || 0} catégorie(s)
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -40,9 +42,9 @@ export default async function AdminCategoriesPage() {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>New Category</CardTitle>
+              <CardTitle>Nouvelle catégorie</CardTitle>
               <CardDescription>
-                Add a category to the forum
+                Ajouter une catégorie au forum
               </CardDescription>
             </CardHeader>
             <CardContent>

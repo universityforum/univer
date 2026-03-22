@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Users } from 'lucide-react'
+import { Users, UserPlus } from 'lucide-react'
 import { JoinClubButton } from '@/components/join-club-button'
 
 export default async function ClubsPage() {
@@ -32,7 +32,7 @@ export default async function ClubsPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Clubs</h1>
         <p className="text-muted-foreground">
-          Join university clubs and participate in enriching activities
+          Rejoignez des clubs universitaires et participez à des activités enrichissantes
         </p>
       </div>
 
@@ -60,8 +60,8 @@ export default async function ClubsPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
-                        <Users className="h-4 w-4" aria-hidden="true" />
-                        {memberCount} member{memberCount !== 1 ? 's' : ''}
+                        <Users className="h-4 w-4" />
+                        {memberCount} membre{memberCount !== 1 ? 's' : ''}
                       </span>
                     </div>
                     {user ? (
@@ -70,12 +70,12 @@ export default async function ClubsPage() {
                         isMember={isMember} 
                       />
                     ) : (
-                      <Badge variant="outline">Sign in to join</Badge>
+                      <Badge variant="outline">Connectez-vous pour rejoindre</Badge>
                     )}
                   </div>
                   {isMember && (
                     <Badge className="mt-3 bg-secondary/20 text-secondary-foreground">
-                      Member
+                      Membre
                     </Badge>
                   )}
                 </CardContent>
@@ -86,10 +86,10 @@ export default async function ClubsPage() {
       ) : (
         <Card>
           <CardContent className="p-8 text-center">
-            <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" aria-hidden="true" />
-            <h3 className="text-lg font-semibold mb-2">No clubs available</h3>
+            <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-lg font-semibold mb-2">Aucun club disponible</h3>
             <p className="text-muted-foreground">
-              Clubs will be available soon
+              Les clubs seront bientôt disponibles
             </p>
           </CardContent>
         </Card>

@@ -28,7 +28,7 @@ export function AnnouncementForm() {
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-      setError('You must be signed in')
+      setError('Vous devez être connecté')
       setLoading(false)
       return
     }
@@ -57,51 +57,51 @@ export function AnnouncementForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="p-3 bg-destructive/10 text-destructive rounded-lg text-sm" role="alert">
+        <div className="p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
           {error}
         </div>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="title">Title</Label>
+        <Label htmlFor="title">Titre</Label>
         <Input
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="e.g. Scheduled Maintenance"
+          placeholder="Ex: Maintenance prévue"
           required
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="content">Content</Label>
+        <Label htmlFor="content">Contenu</Label>
         <Textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Announcement content..."
+          placeholder="Contenu de l'annonce..."
           rows={4}
           required
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="priority">Priority</Label>
+        <Label htmlFor="priority">Priorité</Label>
         <Select value={priority} onValueChange={(v) => setPriority(v as 'low' | 'medium' | 'high')}>
-          <SelectTrigger id="priority">
+          <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="low">Low</SelectItem>
-            <SelectItem value="medium">Medium</SelectItem>
-            <SelectItem value="high">High</SelectItem>
+            <SelectItem value="low">Basse</SelectItem>
+            <SelectItem value="medium">Moyenne</SelectItem>
+            <SelectItem value="high">Haute</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <Button type="submit" className="w-full" disabled={loading || !title.trim() || !content.trim()}>
         {loading ? <Spinner className="h-4 w-4 mr-2" /> : null}
-        Publish
+        Publier
       </Button>
     </form>
   )

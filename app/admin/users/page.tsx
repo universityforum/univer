@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { formatDistanceToNow } from 'date-fns'
+import { fr } from 'date-fns/locale'
 import { UserActions } from '@/components/admin/user-actions'
 
 export default async function AdminUsersPage() {
@@ -27,17 +28,17 @@ export default async function AdminUsersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Users</h1>
+        <h1 className="text-3xl font-bold mb-2">Utilisateurs</h1>
         <p className="text-muted-foreground">
-          Manage platform users
+          Gérer les utilisateurs de la plateforme
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>User List</CardTitle>
+          <CardTitle>Liste des utilisateurs</CardTitle>
           <CardDescription>
-            {users?.length || 0} registered user(s)
+            {users?.length || 0} utilisateur(s) inscrit(s)
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -45,11 +46,11 @@ export default async function AdminUsersPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b text-left">
-                  <th className="pb-3 font-medium">User</th>
+                  <th className="pb-3 font-medium">Utilisateur</th>
                   <th className="pb-3 font-medium">Email</th>
-                  <th className="pb-3 font-medium">Role</th>
-                  <th className="pb-3 font-medium">Department</th>
-                  <th className="pb-3 font-medium">Registered</th>
+                  <th className="pb-3 font-medium">Rôle</th>
+                  <th className="pb-3 font-medium">Département</th>
+                  <th className="pb-3 font-medium">Inscrit</th>
                   <th className="pb-3 font-medium">Actions</th>
                 </tr>
               </thead>
@@ -65,7 +66,7 @@ export default async function AdminUsersPage() {
                               {getInitials(user.full_name)}
                             </AvatarFallback>
                           </Avatar>
-                          <span className="font-medium">{user.full_name || 'No name'}</span>
+                          <span className="font-medium">{user.full_name || 'Sans nom'}</span>
                         </div>
                       </td>
                       <td className="py-4 text-muted-foreground">{user.email}</td>
@@ -76,7 +77,7 @@ export default async function AdminUsersPage() {
                       </td>
                       <td className="py-4 text-muted-foreground">{user.department || '-'}</td>
                       <td className="py-4 text-sm text-muted-foreground">
-                        {formatDistanceToNow(new Date(user.created_at), { addSuffix: true })}
+                        {formatDistanceToNow(new Date(user.created_at), { addSuffix: true, locale: fr })}
                       </td>
                       <td className="py-4">
                         <UserActions user={user} />
@@ -86,7 +87,7 @@ export default async function AdminUsersPage() {
                 ) : (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-muted-foreground">
-                      No users
+                      Aucun utilisateur
                     </td>
                   </tr>
                 )}

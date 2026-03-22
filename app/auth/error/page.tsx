@@ -13,19 +13,19 @@ export default function AuthErrorPage() {
             <Image src="/logo.png" alt="University Forum" width={120} height={60} />
           </div>
           <div className="flex justify-center mb-4">
-            <AlertCircle className="h-12 w-12 text-destructive" aria-hidden="true" />
+            <AlertCircle className="h-12 w-12 text-destructive" />
           </div>
-          <CardTitle className="text-2xl">Authentication Error</CardTitle>
+          <CardTitle className="text-2xl">Erreur d{"'"}authentification</CardTitle>
           <CardDescription>
-            An error occurred during sign in. Please try again.
+            Une erreur s{"'"}est produite lors de la connexion. Veuillez réessayer.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <Button asChild>
-            <Link href="/login">Back to sign in</Link>
+            <Link href="/login">Retour à la connexion</Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/">Back to home</Link>
+            <Link href="/">Retour à l{"'"}accueil</Link>
           </Button>
         </CardContent>
       </Card>

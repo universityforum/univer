@@ -71,7 +71,7 @@ export function CategoryList({ categories }: CategoryListProps) {
   if (categories.length === 0) {
     return (
       <p className="text-center text-muted-foreground py-8">
-        No categories created
+        Aucune catégorie créée
       </p>
     )
   }
@@ -101,17 +101,16 @@ export function CategoryList({ categories }: CategoryListProps) {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" onClick={() => openEdit(category)} aria-label="Edit">
-                <Pencil className="h-4 w-4" aria-hidden="true" />
+              <Button variant="ghost" size="icon" onClick={() => openEdit(category)}>
+                <Pencil className="h-4 w-4" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={() => setDeleteCategory(category)}
                 className="text-destructive"
-                aria-label="Delete"
               >
-                <Trash2 className="h-4 w-4" aria-hidden="true" />
+                <Trash2 className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -121,17 +120,16 @@ export function CategoryList({ categories }: CategoryListProps) {
       <Dialog open={!!editCategory} onOpenChange={() => setEditCategory(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Category</DialogTitle>
+            <DialogTitle>Modifier la catégorie</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-cat-name">Name</Label>
-              <Input id="edit-cat-name" value={name} onChange={(e) => setName(e.target.value)} />
+              <Label>Nom</Label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-cat-desc">Description</Label>
+              <Label>Description</Label>
               <Textarea 
-                id="edit-cat-desc"
                 value={description} 
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
@@ -140,10 +138,10 @@ export function CategoryList({ categories }: CategoryListProps) {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditCategory(null)}>
-              Cancel
+              Annuler
             </Button>
             <Button onClick={handleEdit} disabled={loading || !name.trim()}>
-              Save
+              Enregistrer
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -152,18 +150,18 @@ export function CategoryList({ categories }: CategoryListProps) {
       <Dialog open={!!deleteCategory} onOpenChange={() => setDeleteCategory(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Category</DialogTitle>
+            <DialogTitle>Supprimer la catégorie</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete "{deleteCategory?.name}"?
-              Associated discussions will no longer be categorized.
+              Êtes-vous sûr de vouloir supprimer "{deleteCategory?.name}" ?
+              Les discussions associées ne seront plus catégorisées.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteCategory(null)}>
-              Cancel
+              Annuler
             </Button>
             <Button variant="destructive" onClick={handleDelete} disabled={loading}>
-              Delete
+              Supprimer
             </Button>
           </DialogFooter>
         </DialogContent>

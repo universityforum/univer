@@ -17,9 +17,9 @@ export default async function AdminEventsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Events</h1>
+        <h1 className="text-3xl font-bold mb-2">Événements</h1>
         <p className="text-muted-foreground">
-          Manage university events
+          Gérer les événements universitaires
         </p>
       </div>
 
@@ -27,9 +27,9 @@ export default async function AdminEventsPage() {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Event List</CardTitle>
+              <CardTitle>Liste des événements</CardTitle>
               <CardDescription>
-                {events?.length || 0} event(s)
+                {events?.length || 0} événement(s)
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -41,9 +41,9 @@ export default async function AdminEventsPage() {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>New Event</CardTitle>
+              <CardTitle>Nouvel événement</CardTitle>
               <CardDescription>
-                Create an event
+                Créer un événement
               </CardDescription>
             </CardHeader>
             <CardContent>

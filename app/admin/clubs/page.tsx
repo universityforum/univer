@@ -20,7 +20,7 @@ export default async function AdminClubsPage() {
       <div>
         <h1 className="text-3xl font-bold mb-2">Clubs</h1>
         <p className="text-muted-foreground">
-          Manage university clubs
+          Gérer les clubs universitaires
         </p>
       </div>
 
@@ -28,7 +28,7 @@ export default async function AdminClubsPage() {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Club List</CardTitle>
+              <CardTitle>Liste des clubs</CardTitle>
               <CardDescription>
                 {clubs?.length || 0} club(s)
               </CardDescription>
@@ -42,9 +42,9 @@ export default async function AdminClubsPage() {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>New Club</CardTitle>
+              <CardTitle>Nouveau club</CardTitle>
               <CardDescription>
-                Create a club
+                Créer un club
               </CardDescription>
             </CardHeader>
             <CardContent>

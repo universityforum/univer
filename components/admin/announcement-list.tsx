@@ -20,6 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch'
 import { Pencil, Trash2, Eye, EyeOff } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import { fr } from 'date-fns/locale'
 import type { Announcement, Profile } from '@/lib/types'
 
 interface AnnouncementListProps {
@@ -33,9 +34,9 @@ const priorityColors: Record<string, string> = {
 }
 
 const priorityLabels: Record<string, string> = {
-  low: 'Low',
-  medium: 'Medium',
-  high: 'High',
+  low: 'Basse',
+  medium: 'Moyenne',
+  high: 'Haute',
 }
 
 export function AnnouncementList({ announcements }: AnnouncementListProps) {
@@ -101,7 +102,7 @@ export function AnnouncementList({ announcements }: AnnouncementListProps) {
   if (announcements.length === 0) {
     return (
       <p className="text-center text-muted-foreground py-8">
-        No announcements created
+        Aucune annonce créée
       </p>
     )
   }
@@ -130,8 +131,8 @@ export function AnnouncementList({ announcements }: AnnouncementListProps) {
                 {announcement.content}
               </p>
               <p className="text-xs text-muted-foreground">
-                By {announcement.creator?.full_name || 'Anonymous'} - {' '}
-                {formatDistanceToNow(new Date(announcement.created_at), { addSuffix: true })}
+                Par {announcement.creator?.full_name || 'Anonyme'} - {' '}
+                {formatDistanceToNow(new Date(announcement.created_at), { addSuffix: true, locale: fr })}
               </p>
             </div>
             <div className="flex items-center gap-2 ml-4">
@@ -139,25 +140,24 @@ export function AnnouncementList({ announcements }: AnnouncementListProps) {
                 variant="ghost" 
                 size="icon" 
                 onClick={() => toggleActive(announcement)}
-                aria-label={announcement.is_active ? 'Deactivate' : 'Activate'}
+                title={announcement.is_active ? 'Désactiver' : 'Activer'}
               >
                 {announcement.is_active ? (
-                  <Eye className="h-4 w-4" aria-hidden="true" />
+                  <Eye className="h-4 w-4" />
                 ) : (
-                  <EyeOff className="h-4 w-4" aria-hidden="true" />
+                  <EyeOff className="h-4 w-4" />
                 )}
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => openEdit(announcement)} aria-label="Edit">
-                <Pencil className="h-4 w-4" aria-hidden="true" />
+              <Button variant="ghost" size="icon" onClick={() => openEdit(announcement)}>
+                <Pencil className="h-4 w-4" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={() => setDeleteAnnouncement(announcement)}
                 className="text-destructive"
-                aria-label="Delete"
               >
-                <Trash2 className="h-4 w-4" aria-hidden="true" />
+                <Trash2 className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -167,46 +167,45 @@ export function AnnouncementList({ announcements }: AnnouncementListProps) {
       <Dialog open={!!editAnnouncement} onOpenChange={() => setEditAnnouncement(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Announcement</DialogTitle>
+            <DialogTitle>Modifier l{"'"}annonce</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-title">Title</Label>
-              <Input id="edit-title" value={title} onChange={(e) => setTitle(e.target.value)} />
+              <Label>Titre</Label>
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-content">Content</Label>
+              <Label>Contenu</Label>
               <Textarea 
-                id="edit-content"
                 value={content} 
                 onChange={(e) => setContent(e.target.value)}
                 rows={4}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-priority">Priority</Label>
+              <Label>Priorité</Label>
               <Select value={priority} onValueChange={(v) => setPriority(v as 'low' | 'medium' | 'high')}>
-                <SelectTrigger id="edit-priority">
+                <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="low">Low</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="high">High</SelectItem>
+                  <SelectItem value="low">Basse</SelectItem>
+                  <SelectItem value="medium">Moyenne</SelectItem>
+                  <SelectItem value="high">Haute</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="edit-active">Active</Label>
-              <Switch id="edit-active" checked={isActive} onCheckedChange={setIsActive} />
+              <Label>Active</Label>
+              <Switch checked={isActive} onCheckedChange={setIsActive} />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditAnnouncement(null)}>
-              Cancel
+              Annuler
             </Button>
             <Button onClick={handleEdit} disabled={loading || !title.trim()}>
-              Save
+              Enregistrer
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -215,17 +214,17 @@ export function AnnouncementList({ announcements }: AnnouncementListProps) {
       <Dialog open={!!deleteAnnouncement} onOpenChange={() => setDeleteAnnouncement(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Announcement</DialogTitle>
+            <DialogTitle>Supprimer l{"'"}annonce</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete "{deleteAnnouncement?.title}"?
+              Êtes-vous sûr de vouloir supprimer "{deleteAnnouncement?.title}" ?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteAnnouncement(null)}>
-              Cancel
+              Annuler
             </Button>
             <Button variant="destructive" onClick={handleDelete} disabled={loading}>
-              Delete
+              Supprimer
             </Button>
           </DialogFooter>
         </DialogContent>

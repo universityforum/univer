@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import Image from 'next/image'
 import Link from 'next/link'
 import { AdminSidebar } from '@/components/admin/admin-sidebar'
 
@@ -34,7 +35,7 @@ export default async function AdminLayout({
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">{profile?.full_name}</span>
             <Link href="/forum" className="text-sm text-primary hover:underline">
-              Back to forum
+              Retour au forum
             </Link>
           </div>
         </header>

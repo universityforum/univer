@@ -26,7 +26,7 @@ export function ClubForm() {
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-      setError('You must be signed in')
+      setError('Vous devez être connecté')
       setLoading(false)
       return
     }
@@ -52,18 +52,18 @@ export function ClubForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="p-3 bg-destructive/10 text-destructive rounded-lg text-sm" role="alert">
+        <div className="p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
           {error}
         </div>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
+        <Label htmlFor="name">Nom</Label>
         <Input
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Computer Science Club"
+          placeholder="Ex: Club Informatique"
           required
         />
       </div>
@@ -74,14 +74,14 @@ export function ClubForm() {
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Club description..."
+          placeholder="Description du club..."
           rows={3}
         />
       </div>
 
       <Button type="submit" className="w-full" disabled={loading || !name.trim()}>
         {loading ? <Spinner className="h-4 w-4 mr-2" /> : null}
-        Create
+        Créer
       </Button>
     </form>
   )

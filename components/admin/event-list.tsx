@@ -18,6 +18,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Pencil, Trash2, Calendar, MapPin } from 'lucide-react'
 import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
 import type { Event, Profile } from '@/lib/types'
 
 interface EventListProps {
@@ -84,7 +85,7 @@ export function EventList({ events }: EventListProps) {
   if (events.length === 0) {
     return (
       <p className="text-center text-muted-foreground py-8">
-        No events created
+        Aucun événement créé
       </p>
     )
   }
@@ -103,9 +104,9 @@ export function EventList({ events }: EventListProps) {
               <div className="flex items-center gap-2 mb-2">
                 <span className="font-medium">{event.title}</span>
                 {isPast(event.start_date) ? (
-                  <Badge variant="secondary">Past</Badge>
+                  <Badge variant="secondary">Passé</Badge>
                 ) : (
-                  <Badge className="bg-green-500/10 text-green-700">Upcoming</Badge>
+                  <Badge className="bg-green-500/10 text-green-700">À venir</Badge>
                 )}
               </div>
               {event.description && (
@@ -115,29 +116,28 @@ export function EventList({ events }: EventListProps) {
               )}
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
-                  <Calendar className="h-3 w-3" aria-hidden="true" />
-                  {format(new Date(event.start_date), 'PPP \'at\' HH:mm')}
+                  <Calendar className="h-3 w-3" />
+                  {format(new Date(event.start_date), 'PPP à HH:mm', { locale: fr })}
                 </span>
                 {event.location && (
                   <span className="flex items-center gap-1">
-                    <MapPin className="h-3 w-3" aria-hidden="true" />
+                    <MapPin className="h-3 w-3" />
                     {event.location}
                   </span>
                 )}
               </div>
             </div>
             <div className="flex items-center gap-2 ml-4">
-              <Button variant="ghost" size="icon" onClick={() => openEdit(event)} aria-label="Edit">
-                <Pencil className="h-4 w-4" aria-hidden="true" />
+              <Button variant="ghost" size="icon" onClick={() => openEdit(event)}>
+                <Pencil className="h-4 w-4" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={() => setDeleteEvent(event)}
                 className="text-destructive"
-                aria-label="Delete"
               >
-                <Trash2 className="h-4 w-4" aria-hidden="true" />
+                <Trash2 className="h-4 w-4" />
               </Button>
             </div>
           </div>
@@ -147,40 +147,37 @@ export function EventList({ events }: EventListProps) {
       <Dialog open={!!editEvent} onOpenChange={() => setEditEvent(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Event</DialogTitle>
+            <DialogTitle>Modifier l{"'"}événement</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-event-title">Title</Label>
-              <Input id="edit-event-title" value={title} onChange={(e) => setTitle(e.target.value)} />
+              <Label>Titre</Label>
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-event-desc">Description</Label>
+              <Label>Description</Label>
               <Textarea 
-                id="edit-event-desc"
                 value={description} 
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-event-location">Location</Label>
-              <Input id="edit-event-location" value={location} onChange={(e) => setLocation(e.target.value)} />
+              <Label>Lieu</Label>
+              <Input value={location} onChange={(e) => setLocation(e.target.value)} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="edit-event-start">Start date</Label>
+                <Label>Date de début</Label>
                 <Input 
-                  id="edit-event-start"
                   type="datetime-local" 
                   value={startDate} 
                   onChange={(e) => setStartDate(e.target.value)} 
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="edit-event-end">End date</Label>
+                <Label>Date de fin</Label>
                 <Input 
-                  id="edit-event-end"
                   type="datetime-local" 
                   value={endDate} 
                   onChange={(e) => setEndDate(e.target.value)} 
@@ -190,10 +187,10 @@ export function EventList({ events }: EventListProps) {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditEvent(null)}>
-              Cancel
+              Annuler
             </Button>
             <Button onClick={handleEdit} disabled={loading || !title.trim()}>
-              Save
+              Enregistrer
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -202,17 +199,17 @@ export function EventList({ events }: EventListProps) {
       <Dialog open={!!deleteEvent} onOpenChange={() => setDeleteEvent(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Event</DialogTitle>
+            <DialogTitle>Supprimer l{"'"}événement</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete "{deleteEvent?.title}"?
+              Êtes-vous sûr de vouloir supprimer "{deleteEvent?.title}" ?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteEvent(null)}>
-              Cancel
+              Annuler
             </Button>
             <Button variant="destructive" onClick={handleDelete} disabled={loading}>
-              Delete
+              Supprimer
             </Button>
           </DialogFooter>
         </DialogContent>
