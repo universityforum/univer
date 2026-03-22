@@ -143,7 +143,7 @@ export function Header() {
                   <DropdownMenuSeparator />
                   {notifications.length === 0 ? (
                     <div className="p-4 text-center text-sm text-muted-foreground">
-                      Aucune nouvelle notification
+                      No new notifications
                     </div>
                   ) : (
                     notifications.map((notif) => (
@@ -183,13 +183,19 @@ export function Header() {
                   <DropdownMenuItem asChild>
                     <Link href="/profile" className="flex items-center gap-2">
                       <User className="h-4 w-4" />
-                      Mon Profil
+                      My Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/notifications" className="flex items-center gap-2">
+                      <Bell className="h-4 w-4" />
+                      Notifications
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/settings" className="flex items-center gap-2">
                       <Settings className="h-4 w-4" />
-                      Paramètres
+                      Settings
                     </Link>
                   </DropdownMenuItem>
                   {profile.role === 'admin' && (
@@ -206,7 +212,7 @@ export function Header() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="text-destructive">
                     <LogOut className="h-4 w-4 mr-2" />
-                    Déconnexion
+                    Sign out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

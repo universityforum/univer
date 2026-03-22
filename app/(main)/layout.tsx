@@ -13,7 +13,7 @@ export default function MainLayout({
       </main>
       <footer className="border-t py-6 bg-card">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} University Forum. Tous droits réservés.
+          &copy; {new Date().getFullYear()} University Forum. All rights reserved.
         </div>
       </footer>
     </div>

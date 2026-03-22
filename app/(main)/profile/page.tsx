@@ -4,9 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { MessageSquare, Heart, Calendar } from 'lucide-react'
+import { MessageSquare, Heart, Calendar, Mail, Building2 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { ProfileEditForm } from '@/components/profile-edit-form'
 import Link from 'next/link'
 
@@ -68,19 +67,25 @@ export default async function ProfilePage() {
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
                 <Avatar className="h-24 w-24 mb-4">
-                  <AvatarImage src={profile?.avatar_url || undefined} />
+                  <AvatarImage src={profile?.avatar_url || undefined} alt={profile?.full_name || 'User'} />
                   <AvatarFallback className="bg-primary text-primary-foreground text-2xl">
                     {getInitials(profile?.full_name)}
                   </AvatarFallback>
                 </Avatar>
-                <h1 className="text-2xl font-bold">{profile?.full_name || 'Utilisateur'}</h1>
-                <p className="text-muted-foreground">{profile?.email}</p>
+                <h1 className="text-2xl font-bold">{profile?.full_name || 'User'}</h1>
+                <p className="text-muted-foreground flex items-center gap-1">
+                  <Mail className="h-3 w-3" />
+                  {profile?.email}
+                </p>
                 <Badge className="mt-2 capitalize">{profile?.role}</Badge>
                 {profile?.department && (
-                  <p className="text-sm text-muted-foreground mt-2">{profile.department}</p>
+                  <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
+                    <Building2 className="h-3 w-3" />
+                    {profile.department}
+                  </p>
                 )}
                 {profile?.bio && (
-                  <p className="text-sm mt-4">{profile.bio}</p>
+                  <p className="text-sm mt-4 text-muted-foreground">{profile.bio}</p>
                 )}
               </div>
             </CardContent>
@@ -88,7 +93,7 @@ export default async function ProfilePage() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Statistiques</CardTitle>
+              <CardTitle className="text-lg">Statistics</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
@@ -101,18 +106,18 @@ export default async function ProfilePage() {
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-2 text-muted-foreground">
                   <Heart className="h-4 w-4" />
-                  Réponses
+                  Replies
                 </span>
                 <span className="font-semibold">{replyCount || 0}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-2 text-muted-foreground">
                   <Calendar className="h-4 w-4" />
-                  Membre depuis
+                  Member since
                 </span>
                 <span className="font-semibold text-sm">
                   {profile?.created_at
-                    ? formatDistanceToNow(new Date(profile.created_at), { addSuffix: true, locale: fr })
+                    ? formatDistanceToNow(new Date(profile.created_at), { addSuffix: true })
                     : '-'}
                 </span>
               </div>
@@ -123,9 +128,9 @@ export default async function ProfilePage() {
         <div className="lg:col-span-2">
           <Tabs defaultValue="posts">
             <TabsList className="w-full justify-start">
-              <TabsTrigger value="posts">Mes discussions</TabsTrigger>
-              <TabsTrigger value="replies">Mes réponses</TabsTrigger>
-              <TabsTrigger value="settings">Modifier le profil</TabsTrigger>
+              <TabsTrigger value="posts">My Discussions</TabsTrigger>
+              <TabsTrigger value="replies">My Replies</TabsTrigger>
+              <TabsTrigger value="settings">Edit Profile</TabsTrigger>
             </TabsList>
             
             <TabsContent value="posts" className="mt-6">
@@ -134,15 +139,15 @@ export default async function ProfilePage() {
                   {posts.map((post) => (
                     <Card key={post.id}>
                       <CardContent className="p-4">
-                        <Link href={`/forum/${post.id}`} className="block">
-                          <h3 className="font-semibold hover:text-primary">{post.title}</h3>
+                        <Link href={`/forum/${post.id}`} className="block group">
+                          <h3 className="font-semibold group-hover:text-primary transition-colors">{post.title}</h3>
                           <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
                             {post.content.substring(0, 150)}...
                           </p>
                           <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-                            <Badge variant="secondary">{post.category?.name || 'Général'}</Badge>
-                            <span>{post.replies?.[0]?.count || 0} réponses</span>
-                            <span>{formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: fr })}</span>
+                            <Badge variant="secondary">{post.category?.name || 'General'}</Badge>
+                            <span>{post.replies?.[0]?.count || 0} replies</span>
+                            <span>{formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}</span>
                           </div>
                         </Link>
                       </CardContent>
@@ -152,7 +157,7 @@ export default async function ProfilePage() {
               ) : (
                 <Card>
                   <CardContent className="p-8 text-center text-muted-foreground">
-                    Aucune discussion créée
+                    No discussions created yet
                   </CardContent>
                 </Card>
               )}
@@ -164,13 +169,13 @@ export default async function ProfilePage() {
                   {replies.map((reply) => (
                     <Card key={reply.id}>
                       <CardContent className="p-4">
-                        <Link href={`/forum/${reply.post?.id}`} className="block">
+                        <Link href={`/forum/${reply.post?.id}`} className="block group">
                           <p className="text-sm text-muted-foreground mb-1">
-                            En réponse à: <span className="font-medium text-foreground">{reply.post?.title}</span>
+                            In reply to: <span className="font-medium text-foreground group-hover:text-primary transition-colors">{reply.post?.title}</span>
                           </p>
                           <p className="text-sm line-clamp-2">{reply.content}</p>
                           <span className="text-xs text-muted-foreground mt-2 block">
-                            {formatDistanceToNow(new Date(reply.created_at), { addSuffix: true, locale: fr })}
+                            {formatDistanceToNow(new Date(reply.created_at), { addSuffix: true })}
                           </span>
                         </Link>
                       </CardContent>
@@ -180,7 +185,7 @@ export default async function ProfilePage() {
               ) : (
                 <Card>
                   <CardContent className="p-8 text-center text-muted-foreground">
-                    Aucune réponse postée
+                    No replies posted yet
                   </CardContent>
                 </Card>
               )}
@@ -189,9 +194,9 @@ export default async function ProfilePage() {
             <TabsContent value="settings" className="mt-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Modifier le profil</CardTitle>
+                  <CardTitle>Edit Profile</CardTitle>
                   <CardDescription>
-                    Mettez à jour vos informations personnelles
+                    Update your personal information
                   </CardDescription>
                 </CardHeader>
                 <CardContent>

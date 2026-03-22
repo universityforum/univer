@@ -7,8 +7,8 @@ const _inter = Inter({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'University Forum - Plateforme Universitaire',
-  description: 'Forum universitaire pour les étudiants, enseignants et administrateurs. Partagez vos connaissances, posez des questions et rejoignez des clubs.',
+  title: 'University Forum - Campus Community Platform',
+  description: 'University forum for students, teachers, and administrators. Share knowledge, ask questions, and join clubs.',
   generator: 'v0.app',
   icons: {
     icon: '/logo.png',
@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr">
+    <html lang="en">
       <body className="font-sans antialiased">
         {children}
         <Analytics />

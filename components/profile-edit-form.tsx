@@ -32,7 +32,7 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-      setError('Vous devez être connecté')
+      setError('You must be signed in')
       setLoading(false)
       return
     }
@@ -65,27 +65,27 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
       )}
       {success && (
         <div className="p-3 bg-secondary/20 text-secondary-foreground rounded-lg text-sm">
-          Profil mis à jour avec succès !
+          Profile updated successfully!
         </div>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="fullName">Nom complet</Label>
+        <Label htmlFor="fullName">Full Name</Label>
         <Input
           id="fullName"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
-          placeholder="Votre nom complet"
+          placeholder="Your full name"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="department">Département / Filière</Label>
+        <Label htmlFor="department">Department / Major</Label>
         <Input
           id="department"
           value={department}
           onChange={(e) => setDepartment(e.target.value)}
-          placeholder="Ex: Informatique, Droit, Médecine..."
+          placeholder="e.g., Computer Science, Law, Medicine..."
         />
       </div>
 
@@ -95,14 +95,14 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
           id="bio"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
-          placeholder="Parlez un peu de vous..."
+          placeholder="Tell us a bit about yourself..."
           rows={4}
         />
       </div>
 
       <Button type="submit" disabled={loading}>
         {loading ? <Spinner className="h-4 w-4 mr-2" /> : null}
-        Enregistrer
+        Save Changes
       </Button>
     </form>
   )
