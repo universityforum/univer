@@ -24,45 +24,75 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('[v0] Login attempt with email:', email)
     setLoading(true)
     setError(null)
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
 
-    if (error) {
-      setError(error.message)
+      console.log('[v0] Login result:', { user: data?.user?.id, error: error?.message })
+
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+      } else if (data?.user) {
+        // Check user role and redirect accordingly
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', data.user.id)
+          .single()
+        
+        console.log('[v0] User profile:', profile)
+        
+        if (profile?.role === 'admin') {
+          router.push('/admin')
+        } else {
+          router.push('/forum')
+        }
+      }
+    } catch (err) {
+      console.error('[v0] Login error:', err)
+      setError('An unexpected error occurred')
       setLoading(false)
-    } else {
-      // Middleware will handle role-based redirect on next navigation
-      router.push('/forum')
     }
   }
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('[v0] Signup attempt with email:', email)
     setLoading(true)
     setError(null)
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || 
-          `${window.location.origin}/auth/callback`,
-        data: {
-          full_name: fullName,
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || 
+            `${window.location.origin}/auth/callback`,
+          data: {
+            full_name: fullName,
+          },
         },
-      },
-    })
+      })
 
-    if (error) {
-      setError(error.message)
-      setLoading(false)
-    } else {
-      setMessage('Check your email to confirm your registration.')
+      console.log('[v0] Signup result:', { user: data?.user?.id, error: error?.message })
+
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+      } else {
+        setMessage('Check your email to confirm your registration.')
+        setLoading(false)
+      }
+    } catch (err) {
+      console.error('[v0] Signup error:', err)
+      setError('An unexpected error occurred')
       setLoading(false)
     }
   }
