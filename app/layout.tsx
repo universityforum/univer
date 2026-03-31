@@ -80,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${geistMono.variable}`} suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

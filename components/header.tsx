@@ -59,14 +59,14 @@ export function Header() {
         if (data) {
           setProfile(data)
         } else if (profileError?.code === 'PGRST116') {
-          // Profile doesn't exist - create it from user metadata
+          // Profile doesn't exist - create it from user metadata with default role 'etudiant'
           const { data: newProfile } = await supabase
             .from('profiles')
             .insert({
               id: user.id,
               email: user.email,
               full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
-              role: 'student'
+              role: 'etudiant'
             })
             .select()
             .single()

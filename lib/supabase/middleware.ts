@@ -62,17 +62,17 @@ export async function updateSession(request: NextRequest) {
       .eq('id', user.id)
       .single()
 
-    // If profile doesn't exist, create it
+    // If profile doesn't exist, create it with default role 'etudiant'
     if (profileError?.code === 'PGRST116') {
       await supabase.from('profiles').insert({
         id: user.id,
         email: user.email,
         full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
-        role: 'student'
+        role: 'etudiant'
       })
     }
 
-    const userRole = profile?.role || 'student'
+    const userRole = profile?.role || 'etudiant'
     const url = request.nextUrl.clone()
 
     // Role-based redirect

@@ -20,17 +20,17 @@ export async function GET(request: Request) {
         .single()
       
       if (profileError?.code === 'PGRST116') {
-        // Profile doesn't exist - create it
+        // Profile doesn't exist - create it with default role 'etudiant'
         await supabase.from('profiles').insert({
           id: user.id,
           email: user.email,
           full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
-          role: 'student'
+          role: 'etudiant'
         })
       }
       
       // Determine redirect based on role
-      const userRole = profile?.role || 'student'
+      const userRole = profile?.role || 'etudiant'
       let redirectPath = '/forum'
       if (userRole === 'admin') {
         redirectPath = '/admin'
