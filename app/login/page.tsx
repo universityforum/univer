@@ -24,7 +24,6 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('[v0] Login attempt with email:', email)
     setLoading(true)
     setError(null)
 
@@ -34,8 +33,6 @@ export default function LoginPage() {
         password,
       })
 
-      console.log('[v0] Login result:', { user: data?.user?.id, error: error?.message })
-
       if (error) {
         setError(error.message)
         setLoading(false)
@@ -43,20 +40,21 @@ export default function LoginPage() {
         // Check user role and redirect accordingly
         const { data: profile } = await supabase
           .from('profiles')
-          .select('role')
+          .select('role, is_admin')
           .eq('id', data.user.id)
           .single()
         
-        console.log('[v0] User profile:', profile)
+        const isAdmin = profile?.role === 'admin' || profile?.is_admin === true
         
-        if (profile?.role === 'admin') {
+        if (isAdmin) {
           router.push('/admin')
+          router.refresh()
         } else {
           router.push('/forum')
+          router.refresh()
         }
       }
     } catch (err) {
-      console.error('[v0] Login error:', err)
       setError('An unexpected error occurred')
       setLoading(false)
     }
@@ -64,12 +62,11 @@ export default function LoginPage() {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('[v0] Signup attempt with email:', email)
     setLoading(true)
     setError(null)
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -81,8 +78,6 @@ export default function LoginPage() {
         },
       })
 
-      console.log('[v0] Signup result:', { user: data?.user?.id, error: error?.message })
-
       if (error) {
         setError(error.message)
         setLoading(false)
@@ -91,7 +86,6 @@ export default function LoginPage() {
         setLoading(false)
       }
     } catch (err) {
-      console.error('[v0] Signup error:', err)
       setError('An unexpected error occurred')
       setLoading(false)
     }
@@ -120,7 +114,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <Image src="/logo.png" alt="University Forum" width={180} height={90} style={{ width: 'auto', height: '90px' }} />
+            <Image src="/logo.png" alt="University Forum" width={180} height={90} loading="eager" priority style={{ width: 'auto', height: 'auto' }} />
           </div>
           <CardTitle className="text-2xl">Welcome</CardTitle>
           <CardDescription>

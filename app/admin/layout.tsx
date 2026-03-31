@@ -22,7 +22,9 @@ export default async function AdminLayout({
     .eq('id', user.id)
     .single()
 
-  if (profile?.role !== 'admin') {
+  // Allow access if user is admin (either by role or is_admin flag)
+  const isAdmin = profile?.role === 'admin' || profile?.is_admin === true
+  if (!isAdmin) {
     redirect('/forum')
   }
 

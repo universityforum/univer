@@ -47,25 +47,20 @@ export function Header() {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data: { user }, error: authError } = await supabase.auth.getUser()
-      console.log('[v0] Header auth check - user:', user?.id, 'error:', authError?.message)
+      const { data: { user } } = await supabase.auth.getUser()
       
       if (user) {
-        // First check if profile exists
         const { data, error: profileError } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single()
         
-        console.log('[v0] Profile fetch result:', data ? 'found' : 'not found', 'error:', profileError?.message)
-        
         if (data) {
           setProfile(data)
         } else if (profileError?.code === 'PGRST116') {
           // Profile doesn't exist - create it from user metadata
-          console.log('[v0] Creating missing profile for user:', user.id)
-          const { data: newProfile, error: insertError } = await supabase
+          const { data: newProfile } = await supabase
             .from('profiles')
             .insert({
               id: user.id,
@@ -76,7 +71,6 @@ export function Header() {
             .select()
             .single()
           
-          console.log('[v0] Profile creation result:', newProfile ? 'success' : 'failed', 'error:', insertError?.message)
           if (newProfile) setProfile(newProfile)
         }
 
@@ -93,8 +87,7 @@ export function Header() {
     fetchProfile()
 
     // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('[v0] Auth state changed:', event, session?.user?.id)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
         fetchProfile()
       } else if (event === 'SIGNED_OUT') {
@@ -132,7 +125,7 @@ export function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="University Forum" width={140} height={50} style={{ width: 'auto', height: '40px' }} />
+            <Image src="/logo.png" alt="University Forum" width={140} height={50} loading="eager" priority style={{ width: 'auto', height: 'auto' }} />
           </Link>
           
           <nav className="hidden md:flex items-center gap-1">
