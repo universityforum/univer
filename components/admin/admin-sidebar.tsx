@@ -16,13 +16,13 @@ import {
 } from 'lucide-react'
 
 const menuItems = [
-  { href: '/admin', label: 'Tableau de bord', icon: LayoutDashboard },
-  { href: '/admin/users', label: 'Utilisateurs', icon: Users },
-  { href: '/admin/categories', label: 'Catégories', icon: FolderOpen },
+  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/users', label: 'Users', icon: Users },
+  { href: '/admin/categories', label: 'Categories', icon: FolderOpen },
   { href: '/admin/posts', label: 'Discussions', icon: MessageSquare },
-  { href: '/admin/events', label: 'Événements', icon: Calendar },
+  { href: '/admin/events', label: 'Events', icon: Calendar },
   { href: '/admin/clubs', label: 'Clubs', icon: Users2 },
-  { href: '/admin/announcements', label: 'Annonces', icon: Megaphone },
+  { href: '/admin/announcements', label: 'Announcements', icon: Megaphone },
 ]
 
 export function AdminSidebar() {

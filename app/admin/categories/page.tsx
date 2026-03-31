@@ -17,9 +17,9 @@ export default async function AdminCategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Catégories</h1>
+          <h1 className="text-3xl font-bold mb-2">Categories</h1>
           <p className="text-muted-foreground">
-            Gérer les catégories du forum
+            Manage forum categories
           </p>
         </div>
       </div>
@@ -28,9 +28,9 @@ export default async function AdminCategoriesPage() {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Liste des catégories</CardTitle>
+              <CardTitle>Category List</CardTitle>
               <CardDescription>
-                {categories?.length || 0} catégorie(s)
+                {categories?.length || 0} category(ies)
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -42,9 +42,9 @@ export default async function AdminCategoriesPage() {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>Nouvelle catégorie</CardTitle>
+              <CardTitle>New Category</CardTitle>
               <CardDescription>
-                Ajouter une catégorie au forum
+                Add a category to the forum
               </CardDescription>
             </CardHeader>
             <CardContent>

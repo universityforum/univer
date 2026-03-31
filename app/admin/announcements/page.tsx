@@ -17,9 +17,9 @@ export default async function AdminAnnouncementsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Annonces</h1>
+        <h1 className="text-3xl font-bold mb-2">Announcements</h1>
         <p className="text-muted-foreground">
-          Gérer les annonces de la plateforme
+          Manage platform announcements
         </p>
       </div>
 
@@ -27,9 +27,9 @@ export default async function AdminAnnouncementsPage() {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Liste des annonces</CardTitle>
+              <CardTitle>Announcement List</CardTitle>
               <CardDescription>
-                {announcements?.length || 0} annonce(s)
+                {announcements?.length || 0} announcement(s)
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -41,9 +41,9 @@ export default async function AdminAnnouncementsPage() {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>Nouvelle annonce</CardTitle>
+              <CardTitle>New Announcement</CardTitle>
               <CardDescription>
-                Créer une annonce
+                Create an announcement
               </CardDescription>
             </CardHeader>
             <CardContent>
