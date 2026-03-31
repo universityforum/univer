@@ -225,15 +225,15 @@ export default async function ForumPage({ searchParams }: { searchParams: Promis
 
             {/* Pagination */}
             {recentPosts && recentPosts.length > 0 && (
-              <div className="flex items-center justify-center gap-2 mt-8">
+              <nav className="flex items-center justify-center gap-2 mt-8" aria-label="Pagination">
                 <Button variant="outline" size="sm" disabled>Previous</Button>
-                <Button variant="default" size="sm" className="w-8 h-8 p-0">1</Button>
+                <Button variant="default" size="sm" className="w-8 h-8 p-0" aria-current="page">1</Button>
                 <Button variant="outline" size="sm" className="w-8 h-8 p-0">2</Button>
                 <Button variant="outline" size="sm" className="w-8 h-8 p-0">3</Button>
                 <Button variant="outline" size="sm">Next</Button>
-              </div>
+              </nav>
             )}
-          </div>
+          </section>
         </div>
       </div>
     </div>
