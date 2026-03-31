@@ -36,6 +36,7 @@ export default function LoginPage() {
       setError(error.message)
       setLoading(false)
     } else {
+      // Middleware will handle role-based redirect on next navigation
       router.push('/forum')
     }
   }
@@ -61,7 +62,7 @@ export default function LoginPage() {
       setError(error.message)
       setLoading(false)
     } else {
-      setMessage('Vérifiez votre email pour confirmer votre inscription.')
+      setMessage('Check your email to confirm your registration.')
       setLoading(false)
     }
   }
@@ -89,11 +90,11 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <Image src="/logo.png" alt="University Forum" width={180} height={90} />
+            <Image src="/logo.png" alt="University Forum" width={180} height={90} style={{ width: 'auto', height: '90px' }} />
           </div>
-          <CardTitle className="text-2xl">Bienvenue</CardTitle>
+          <CardTitle className="text-2xl">Welcome</CardTitle>
           <CardDescription>
-            Connectez-vous pour accéder au forum universitaire
+            Sign in to access the university forum
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -136,7 +137,7 @@ export default function LoginPage() {
                 />
               </svg>
             )}
-            Continuer avec Google
+            Continue with Google
           </Button>
 
           <div className="relative mb-6">
@@ -144,14 +145,14 @@ export default function LoginPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">Ou</span>
+              <span className="bg-card px-2 text-muted-foreground">Or</span>
             </div>
           </div>
 
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Connexion</TabsTrigger>
-              <TabsTrigger value="signup">Inscription</TabsTrigger>
+              <TabsTrigger value="login">Sign in</TabsTrigger>
+              <TabsTrigger value="signup">Sign up</TabsTrigger>
             </TabsList>
             <TabsContent value="login">
               <form onSubmit={handleLogin} className="space-y-4">
@@ -160,14 +161,14 @@ export default function LoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="votre@email.com"
+                    placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="password">Mot de passe</Label>
+                  <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
                     type="password"
@@ -177,18 +178,18 @@ export default function LoginPage() {
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? <Spinner className="h-4 w-4" /> : 'Se connecter'}
+                  {loading ? <Spinner className="h-4 w-4" /> : 'Sign in'}
                 </Button>
               </form>
             </TabsContent>
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">Nom complet</Label>
+                  <Label htmlFor="fullName">Full name</Label>
                   <Input
                     id="fullName"
                     type="text"
-                    placeholder="Jean Dupont"
+                    placeholder="John Doe"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required
@@ -199,14 +200,14 @@ export default function LoginPage() {
                   <Input
                     id="signupEmail"
                     type="email"
-                    placeholder="votre@email.com"
+                    placeholder="your@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signupPassword">Mot de passe</Label>
+                  <Label htmlFor="signupPassword">Password</Label>
                   <Input
                     id="signupPassword"
                     type="password"
@@ -217,7 +218,7 @@ export default function LoginPage() {
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? <Spinner className="h-4 w-4" /> : "S'inscrire"}
+                  {loading ? <Spinner className="h-4 w-4" /> : "Sign up"}
                 </Button>
               </form>
             </TabsContent>
@@ -225,7 +226,7 @@ export default function LoginPage() {
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
             <Link href="/" className="text-primary hover:underline">
-              Retour à l{"'"}accueil
+              Back to home
             </Link>
           </p>
         </CardContent>

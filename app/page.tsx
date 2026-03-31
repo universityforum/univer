@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
@@ -23,6 +24,26 @@ import {
 
 export default async function HomePage() {
   const supabase = await createClient()
+  
+  // Check if user is authenticated
+  const { data: { user } } = await supabase.auth.getUser()
+  
+  // If user is authenticated, fetch their role and redirect to appropriate dashboard
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+    
+    const userRole = profile?.role || 'student'
+    
+    if (userRole === 'admin') {
+      redirect('/admin')
+    } else {
+      redirect('/forum')
+    }
+  }
   
   const [
     { count: usersCount },

@@ -14,8 +14,6 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse
   }
 
-  // With Fluid compute, don't put this client in a global environment
-  // variable. Always create a new one on each request.
   const supabase = createServerClient(
     supabaseUrl,
     supabaseAnonKey,
@@ -39,39 +37,46 @@ export async function updateSession(request: NextRequest) {
     },
   )
 
-  // Do not run code between createServerClient and
-  // supabase.auth.getUser(). A simple mistake could make it very hard to debug
-  // issues with users being randomly logged out.
-
-  // IMPORTANT: If you remove getUser() and you use server-side rendering
-  // with the Supabase client, your users may be randomly logged out.
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (
-    // if the user is not logged in and the app path, in this case, /protected, is accessed, redirect to the login page
-    request.nextUrl.pathname.startsWith('/protected') &&
-    !user
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
+  const pathname = request.nextUrl.pathname
+
+  // Protect routes that require authentication
+  const protectedPaths = ['/admin', '/profile', '/settings', '/notifications', '/mentors', '/forum/new']
+  const isProtectedPath = protectedPaths.some(path => pathname.startsWith(path))
+
+  if (isProtectedPath && !user) {
     const url = request.nextUrl.clone()
-    url.pathname = '/auth/login'
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
-  // IMPORTANT: You *must* return the supabaseResponse object as it is.
-  // If you're creating a new response object with NextResponse.next() make sure to:
-  // 1. Pass the request in it, like so:
-  //    const myNewResponse = NextResponse.next({ request })
-  // 2. Copy over the cookies, like so:
-  //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-  // 3. Change the myNewResponse object to fit your needs, but avoid changing
-  //    the cookies!
-  // 4. Finally:
-  //    return myNewResponse
-  // If this is not done, you may be causing the browser and server to go out
-  // of sync and terminate the user's session prematurely!
+  // Redirect authenticated users away from login/home pages to their dashboard
+  if (user && (pathname === '/login' || pathname === '/')) {
+    // Fetch user profile to determine role
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    const userRole = profile?.role || 'student'
+    const url = request.nextUrl.clone()
+
+    // Role-based redirect
+    if (userRole === 'admin') {
+      url.pathname = '/admin'
+    } else if (userRole === 'moderator') {
+      url.pathname = '/forum'
+    } else {
+      // student or default
+      url.pathname = '/forum'
+    }
+
+    return NextResponse.redirect(url)
+  }
 
   return supabaseResponse
 }
