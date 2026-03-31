@@ -47,14 +47,38 @@ export function Header() {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      console.log('[v0] Header auth check - user:', user?.id, 'error:', authError?.message)
+      
       if (user) {
-        const { data } = await supabase
+        // First check if profile exists
+        const { data, error: profileError } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single()
-        if (data) setProfile(data)
+        
+        console.log('[v0] Profile fetch result:', data ? 'found' : 'not found', 'error:', profileError?.message)
+        
+        if (data) {
+          setProfile(data)
+        } else if (profileError?.code === 'PGRST116') {
+          // Profile doesn't exist - create it from user metadata
+          console.log('[v0] Creating missing profile for user:', user.id)
+          const { data: newProfile, error: insertError } = await supabase
+            .from('profiles')
+            .insert({
+              id: user.id,
+              email: user.email,
+              full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+              role: 'student'
+            })
+            .select()
+            .single()
+          
+          console.log('[v0] Profile creation result:', newProfile ? 'success' : 'failed', 'error:', insertError?.message)
+          if (newProfile) setProfile(newProfile)
+        }
 
         const { data: notifs } = await supabase
           .from('notifications')
@@ -67,6 +91,19 @@ export function Header() {
       }
     }
     fetchProfile()
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[v0] Auth state changed:', event, session?.user?.id)
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        fetchProfile()
+      } else if (event === 'SIGNED_OUT') {
+        setProfile(null)
+        setNotifications([])
+      }
+    })
+
+    return () => subscription.unsubscribe()
   }, [supabase])
 
   const handleLogout = async () => {
@@ -95,7 +132,7 @@ export function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="University Forum" width={140} height={50} className="h-10 w-auto" />
+            <Image src="/logo.png" alt="University Forum" width={140} height={50} style={{ width: 'auto', height: '40px' }} />
           </Link>
           
           <nav className="hidden md:flex items-center gap-1">

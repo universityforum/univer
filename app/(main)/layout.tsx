@@ -1,21 +1,12 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import { Header } from '@/components/header'
 
-export default async function MainLayout({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
-  
-  // Verify user is authenticated before accessing main layout
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  if (!user) {
-    redirect('/login')
-  }
-
+  // Main layout is accessible to all users (authenticated and guests)
+  // Individual pages like /profile and /settings handle their own auth checks
   return (
     <div className="min-h-screen flex flex-col">
       <Header />

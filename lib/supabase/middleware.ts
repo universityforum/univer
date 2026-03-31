@@ -53,14 +53,24 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Redirect authenticated users away from login/home pages to their dashboard
-  if (user && (pathname === '/login' || pathname === '/')) {
+  // Redirect authenticated users away from login page to their dashboard
+  if (user && pathname === '/login') {
     // Fetch user profile to determine role
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .single()
+
+    // If profile doesn't exist, create it
+    if (profileError?.code === 'PGRST116') {
+      await supabase.from('profiles').insert({
+        id: user.id,
+        email: user.email,
+        full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+        role: 'student'
+      })
+    }
 
     const userRole = profile?.role || 'student'
     const url = request.nextUrl.clone()
@@ -68,10 +78,7 @@ export async function updateSession(request: NextRequest) {
     // Role-based redirect
     if (userRole === 'admin') {
       url.pathname = '/admin'
-    } else if (userRole === 'moderator') {
-      url.pathname = '/forum'
     } else {
-      // student or default
       url.pathname = '/forum'
     }
 
