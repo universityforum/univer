@@ -83,7 +83,7 @@ export default async function HomePage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1">
+      <main id="main-content" className="flex-1" role="main">
         {/* Hero Section */}
         <section className="bg-gradient-to-b from-primary to-primary/90 text-primary-foreground py-16 md:py-24">
           <div className="container mx-auto px-4 text-center">

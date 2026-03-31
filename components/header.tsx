@@ -121,14 +121,15 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-border/40">
+    <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40" role="banner">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="University Forum" width={140} height={50} loading="eager" priority style={{ width: 'auto', height: 'auto' }} />
+          <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md" aria-label="University Forum - Home">
+            <Image src="/logo.png" alt="" width={140} height={50} loading="eager" priority style={{ width: 'auto', height: 'auto' }} />
+            <span className="sr-only">University Forum</span>
           </Link>
           
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1" role="navigation" aria-label="Main navigation">
             {navItems.map((item) => {
               const isActive = item.href === '/' 
                 ? pathname === '/' 
@@ -137,11 +138,12 @@ export function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`px-4 py-2 text-sm font-medium transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                     isActive
                       ? 'text-primary'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
+                  aria-current={isActive ? 'page' : undefined}
                 >
                   {item.label}
                 </Link>
@@ -151,18 +153,23 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-            <Search className="h-5 w-5" />
+          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground" aria-label="Search">
+            <Search className="h-5 w-5" aria-hidden="true" />
           </Button>
 
           {profile ? (
             <>
               <DropdownMenu onOpenChange={(open) => open && markNotificationsRead()}>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-foreground">
-                    <Bell className="h-5 w-5" />
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="relative text-muted-foreground hover:text-foreground"
+                    aria-label={`Notifications${notifications.length > 0 ? `, ${notifications.length} unread` : ''}`}
+                  >
+                    <Bell className="h-5 w-5" aria-hidden="true" />
                     {notifications.length > 0 && (
-                      <span className="absolute -top-0.5 -right-0.5 h-4 w-4 flex items-center justify-center rounded-full bg-destructive text-[10px] text-white font-medium">
+                      <span className="absolute -top-0.5 -right-0.5 h-4 w-4 flex items-center justify-center rounded-full bg-destructive text-[10px] text-white font-medium" aria-hidden="true">
                         {notifications.length}
                       </span>
                     )}
@@ -263,15 +270,18 @@ export function Header() {
             size="icon"
             className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
           </Button>
         </div>
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t bg-white">
-          <nav className="flex flex-col p-4 gap-2">
+        <div id="mobile-menu" className="md:hidden border-t bg-background">
+          <nav className="flex flex-col p-4 gap-2" role="navigation" aria-label="Mobile navigation">
             {navItems.map((item) => {
               const isActive = item.href === '/' 
                 ? pathname === '/' 

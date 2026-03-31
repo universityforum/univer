@@ -64,28 +64,30 @@ export default async function ForumPage({ searchParams }: { searchParams: Promis
           <p className="text-primary-foreground/80 mb-6">
             Ask questions, share experiences, and connect with the community.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-2xl">
+          <search className="flex flex-col sm:flex-row gap-3 max-w-2xl" role="search">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <label htmlFor="search-discussions" className="sr-only">Search discussions</label>
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
               <Input 
+                id="search-discussions"
                 placeholder="Search discussions..." 
                 className="pl-10 bg-white border-0 text-foreground placeholder:text-muted-foreground"
               />
             </div>
-            <Button variant="secondary" className="gap-2">
-              <Filter className="h-4 w-4" />
+            <Button variant="secondary" className="gap-2" aria-label="Filter discussions">
+              <Filter className="h-4 w-4" aria-hidden="true" />
               Filter
             </Button>
-          </div>
+          </search>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar - Categories */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Categories</h2>
-            <div className="space-y-1">
+          <aside className="space-y-4" aria-labelledby="categories-heading">
+            <h2 id="categories-heading" className="text-lg font-semibold">Categories</h2>
+            <nav className="space-y-1" aria-label="Forum categories">
               <Link
                 href="/forum"
                 className={`flex items-center justify-between p-3 rounded-lg transition-colors ${
@@ -115,24 +117,24 @@ export default async function ForumPage({ searchParams }: { searchParams: Promis
                   </Badge>
                 </Link>
               ))}
-            </div>
+            </nav>
 
             {user && (
               <Button className="w-full gap-2 mt-4" asChild>
                 <Link href="/forum/new">
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-4 w-4" aria-hidden="true" />
                   New discussion
                 </Link>
               </Button>
             )}
-          </div>
+          </aside>
 
           {/* Main Content - Posts */}
-          <div className="lg:col-span-3">
+          <section className="lg:col-span-3" aria-labelledby="discussions-heading">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold">All discussions</h2>
-              <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground">
-                <Clock className="h-4 w-4" />
+              <h2 id="discussions-heading" className="text-lg font-semibold">All discussions</h2>
+              <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground" aria-label="Sort by recent">
+                <Clock className="h-4 w-4" aria-hidden="true" />
                 Recent
               </Button>
             </div>
