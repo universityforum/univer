@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ArrowLeft, Eye, Clock, MessageSquare, Pin, Lock } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { ReplyForm } from '@/components/reply-form'
 import { ReplyList } from '@/components/reply-list'
 import { LikeButton } from '@/components/like-button'
@@ -73,15 +72,15 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
       <Button variant="ghost" asChild className="mb-6">
         <Link href="/forum">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Retour au forum
+          Back to forum
         </Link>
       </Button>
 
       <Card className="mb-8">
         <CardContent className="p-6">
-          <div className="flex items-start gap-4">
+          <article className="flex items-start gap-4">
             <Avatar className="h-12 w-12">
-              <AvatarImage src={post.author?.avatar_url || undefined} />
+              <AvatarImage src={post.author?.avatar_url || undefined} alt={post.author?.full_name || 'Author'} />
               <AvatarFallback className="bg-primary text-primary-foreground">
                 {getInitials(post.author?.full_name)}
               </AvatarFallback>
@@ -90,14 +89,14 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 {post.is_pinned && (
                   <Badge variant="secondary" className="bg-secondary/20">
-                    <Pin className="h-3 w-3 mr-1" />
-                    Épinglé
+                    <Pin className="h-3 w-3 mr-1" aria-hidden="true" />
+                    Pinned
                   </Badge>
                 )}
                 {post.is_locked && (
                   <Badge variant="outline">
-                    <Lock className="h-3 w-3 mr-1" />
-                    Verrouillé
+                    <Lock className="h-3 w-3 mr-1" aria-hidden="true" />
+                    Locked
                   </Badge>
                 )}
                 {post.category && (
@@ -107,19 +106,19 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
               <h1 className="text-2xl font-bold mb-2">{post.title}</h1>
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
                 <span className="font-medium text-foreground">
-                  {post.author?.full_name || 'Anonyme'}
+                  {post.author?.full_name || 'Anonymous'}
                 </span>
                 <span className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: fr })}
+                  <Clock className="h-3 w-3" aria-hidden="true" />
+                  <time dateTime={post.created_at}>{formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}</time>
                 </span>
                 <span className="flex items-center gap-1">
-                  <Eye className="h-3 w-3" />
-                  {post.views + 1} vues
+                  <Eye className="h-3 w-3" aria-hidden="true" />
+                  {post.views + 1} views
                 </span>
                 <span className="flex items-center gap-1">
-                  <MessageSquare className="h-3 w-3" />
-                  {replies?.length || 0} réponses
+                  <MessageSquare className="h-3 w-3" aria-hidden="true" />
+                  {replies?.length || 0} replies
                 </span>
               </div>
               <div className="prose prose-sm max-w-none">
@@ -134,39 +133,43 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
                 />
               </div>
             </div>
-          </div>
+          </article>
         </CardContent>
       </Card>
 
-      <div className="space-y-6">
-        <h2 className="text-xl font-semibold">
-          Réponses ({replies?.length || 0})
+      <section className="space-y-6" aria-labelledby="replies-heading">
+        <h2 id="replies-heading" className="text-xl font-semibold">
+          Replies ({replies?.length || 0})
         </h2>
 
         <ReplyList replies={replies || []} currentUserId={user?.id} />
 
         {user && !post.is_locked ? (
-          <ReplyForm postId={post.id} />
+          <ReplyForm 
+            postId={post.id} 
+            postTitle={post.title}
+            postAuthorId={post.user_id}
+          />
         ) : post.is_locked ? (
           <Card>
             <CardContent className="p-6 text-center text-muted-foreground">
-              <Lock className="h-8 w-8 mx-auto mb-2" />
-              Cette discussion est verrouillée
+              <Lock className="h-8 w-8 mx-auto mb-2" aria-hidden="true" />
+              This discussion is locked
             </CardContent>
           </Card>
         ) : (
           <Card>
             <CardContent className="p-6 text-center">
               <p className="text-muted-foreground mb-4">
-                Connectez-vous pour répondre
+                Sign in to reply
               </p>
               <Button asChild>
-                <Link href="/login">Se connecter</Link>
+                <Link href="/login">Sign in</Link>
               </Button>
             </CardContent>
           </Card>
         )}
-      </div>
+      </section>
     </div>
   )
 }

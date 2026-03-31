@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +16,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
+import { SearchDialog } from '@/components/search-dialog'
 import {
   Bell,
   Menu,
@@ -41,11 +41,38 @@ export function Header() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const supabase = createClient()
 
+  // Keyboard shortcut for search (Ctrl/Cmd + K)
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setSearchOpen(true)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  // Fetch notifications function
+  const fetchNotifications = useCallback(async (userId: string) => {
+    const { data: notifs } = await supabase
+      .from('notifications')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('is_read', false)
+      .order('created_at', { ascending: false })
+      .limit(10)
+    if (notifs) setNotifications(notifs)
+  }, [supabase])
+
+  useEffect(() => {
+    let realtimeChannel: ReturnType<typeof supabase.channel> | null = null
+
     const fetchProfile = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       
@@ -74,14 +101,59 @@ export function Header() {
           if (newProfile) setProfile(newProfile)
         }
 
-        const { data: notifs } = await supabase
-          .from('notifications')
-          .select('*')
-          .eq('user_id', user.id)
-          .eq('is_read', false)
-          .order('created_at', { ascending: false })
-          .limit(5)
-        if (notifs) setNotifications(notifs)
+        // Fetch initial notifications
+        await fetchNotifications(user.id)
+
+        // Subscribe to real-time notifications for this user
+        realtimeChannel = supabase
+          .channel(`notifications:${user.id}`)
+          .on(
+            'postgres_changes',
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'notifications',
+              filter: `user_id=eq.${user.id}`,
+            },
+            (payload) => {
+              // Add new notification to the list
+              const newNotification = payload.new as Notification
+              setNotifications((prev) => [newNotification, ...prev].slice(0, 10))
+            }
+          )
+          .on(
+            'postgres_changes',
+            {
+              event: 'UPDATE',
+              schema: 'public',
+              table: 'notifications',
+              filter: `user_id=eq.${user.id}`,
+            },
+            (payload) => {
+              // Update notification if marked as read
+              const updatedNotification = payload.new as Notification
+              if (updatedNotification.is_read) {
+                setNotifications((prev) => 
+                  prev.filter((n) => n.id !== updatedNotification.id)
+                )
+              }
+            }
+          )
+          .on(
+            'postgres_changes',
+            {
+              event: 'DELETE',
+              schema: 'public',
+              table: 'notifications',
+              filter: `user_id=eq.${user.id}`,
+            },
+            (payload) => {
+              // Remove deleted notification
+              const deletedId = payload.old.id
+              setNotifications((prev) => prev.filter((n) => n.id !== deletedId))
+            }
+          )
+          .subscribe()
       }
     }
     fetchProfile()
@@ -93,11 +165,20 @@ export function Header() {
       } else if (event === 'SIGNED_OUT') {
         setProfile(null)
         setNotifications([])
+        // Unsubscribe from realtime when signed out
+        if (realtimeChannel) {
+          supabase.removeChannel(realtimeChannel)
+        }
       }
     })
 
-    return () => subscription.unsubscribe()
-  }, [supabase])
+    return () => {
+      subscription.unsubscribe()
+      if (realtimeChannel) {
+        supabase.removeChannel(realtimeChannel)
+      }
+    }
+  }, [supabase, fetchNotifications])
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -153,9 +234,16 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground" aria-label="Search">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="text-muted-foreground hover:text-foreground" 
+            aria-label="Search (Ctrl+K)"
+            onClick={() => setSearchOpen(true)}
+          >
             <Search className="h-5 w-5" aria-hidden="true" />
           </Button>
+          <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
 
           {profile ? (
             <>
@@ -209,7 +297,7 @@ export function Header() {
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium">{profile.full_name || 'Utilisateur'}</p>
+                      <p className="text-sm font-medium">{profile.full_name || 'User'}</p>
                       <p className="text-xs text-muted-foreground">{profile.email}</p>
                       <Badge variant="secondary" className="w-fit mt-1 capitalize">
                         {profile.role}
